@@ -15,3 +15,7 @@ export async function createUser(params) {
   return new UserModel(params)
 }
 
+export async function checkUserName(params) {
+  console.log(UserModel.exists({username: params}));
+  return UserModel.exists({username: params})
+}
