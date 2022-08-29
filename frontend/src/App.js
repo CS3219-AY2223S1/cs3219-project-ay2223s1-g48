@@ -8,6 +8,7 @@ import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
 import { Box } from "@mui/material";
 import React, { Component } from "react";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             ></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/home" element={<HomePage />} />
           </Routes>
         </Router>
       </Box>
