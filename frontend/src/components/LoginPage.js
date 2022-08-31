@@ -22,6 +22,7 @@ import axios from "axios";
 import { URL_USER_SVC } from "../configs";
 import {
   STATUS_CODE_CONFLICT,
+  STATUS_CODE_LOGIN_FAILED,
   STATUS_CODE_LOGIN_SUCCESSFUL,
 } from "../constants";
 import { Link } from "react-router-dom";
@@ -30,24 +31,55 @@ import HomePage from "./HomePage";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoginSuccess, setIsLoginSucess] = useState(true);
+  const [isLoginSuccess, setIsLoginSucess] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogMsg, setDialogMsg] = useState("");
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
+  const setErrorDialog = (msg) => {
+    setIsDialogOpen(true);
+    setDialogTitle("Something went wrong :(");
+    setDialogMsg(msg);
+  };
+
+  const closeDialog = () => setIsDialogOpen(false);
+
+  const validate = () => {
+    let temp = {};
+    if (!username) {
+      temp.username = "Username is required";
+    }
+    if (!password) {
+      temp.password = "Password is required";
+    }
+    setError(temp);
+  };
+
   const handleLogin = async () => {
+    validate();
+    if (!password || !username) {
+      //setErrorDialog("Please enter your username and password");
+      return;
+    }
     const res = await axios
       .post(`${URL_USER_SVC}/auth`, { username, password })
       .catch((err) => {
-        if (err.response.status === STATUS_CODE_CONFLICT) {
+        if (err.response.status === STATUS_CODE_LOGIN_FAILED) {
+          setErrorDialog("Wrong username or password!");
         } else {
+          setErrorDialog("Please try again later!");
         }
+        return;
       });
 
     if (res && res.status === STATUS_CODE_LOGIN_SUCCESSFUL) {
       setIsLoginSucess(true);
     }
     if (isLoginSuccess) {
-      navigate(`/home`, { state: { username: username } });
+      navigate(`/home/${username}`, { state: { username: username } }); //delete state if no need in the future
     }
   };
   return (
@@ -63,6 +95,9 @@ const LoginPage = () => {
         onChange={(e) => setUsername(e.target.value)}
         sx={{ marginBottom: "1rem" }}
         autoFocus
+        error={error && error.username ? true : false}
+        helperText={error && error.username ? "Please enter your username" : ""}
+        required
       />
       <TextField
         label="Password"
@@ -71,15 +106,25 @@ const LoginPage = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         sx={{ marginBottom: "2rem" }}
+        error={error && error.password ? true : false}
+        required
+        helperText={error && error.password ? "Please enter your password" : ""}
       />
       <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
         <Button variant={"outlined"} onClick={handleLogin}>
           Log In
         </Button>
       </Box>
-      <Routes>
-        <Route path="/home" render={() => <HomePage username={username} />} />
-      </Routes>
+
+      <Dialog open={isDialogOpen} onClose={closeDialog}>
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{dialogMsg}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {<Button onClick={closeDialog}>OK</Button>}
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

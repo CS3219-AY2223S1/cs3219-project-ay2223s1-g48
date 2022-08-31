@@ -1,4 +1,5 @@
 import { ormCreateUser as _createUser } from "../model/user-orm.js";
+import { checkUserName, validateUser } from "../model/repository.js";
 
 export async function createUser(req, res) {
   try {
@@ -30,6 +31,16 @@ export async function createUser(req, res) {
 
 export async function logUserIn(req, res) {
   const { username, password } = req.body;
+
+  const userExists = await validateUser({
+    username: username,
+    password: password,
+  });
+  console.log(userExists);
+  if (!userExists) {
+    res.status(401).send("Wrong username or password");
+    return;
+  }
   console.log(username, password);
   res.status(200).send(`User ${username} successfully logged in`);
 }

@@ -11,12 +11,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 const HomePage = () => {
   const { state } = useLocation();
+  const params = useParams();
   return (
     <Box>
-      <h1>HomePage of {state.username}</h1>
+      <h1>HomePage of {params.username}</h1>
     </Box>
   );
 };
