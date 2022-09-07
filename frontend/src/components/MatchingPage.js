@@ -1,3 +1,4 @@
+import React from 'react';
 import Navbar from './Navbar';
 import { useState } from 'react';
 
@@ -23,7 +24,7 @@ const MatchingPage = () => {
             setMid(false);
             setLow(true);
         }
-    }
+    };
 
     const handleConfirmation = () => {
         if (selection !== null) {
@@ -32,7 +33,7 @@ const MatchingPage = () => {
         } else {
             console.log("selection is null")
         }
-    }
+    };
 
     return (  
         <div className="MatchingPage">
