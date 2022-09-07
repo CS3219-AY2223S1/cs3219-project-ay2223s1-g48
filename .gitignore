@@ -1,3 +1,5 @@
 node_modules/
 frontend/node_modules/
+user-service/node_modules/
 user-service/.env
+matching-service/node_modules/
