@@ -15,6 +15,9 @@ export async function ormCreateUser(username, password) {
   try {
     const exists = await checkUserName(username);
     if (!exists) {
+      const salt = await bcrypt.genSalt(10);
+      password = await bcrypt.hash(password, salt);
+      console.log(salt, password);
       const newUser = await createUser({ username, password });
       newUser.save();
       return true;

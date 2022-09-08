@@ -2,8 +2,9 @@ import {
   ormCreateUser as _createUser,
   ormPatchUser as _patchUser,
   ormDeleteUser as _deleteUser,
+  validateUser,
 } from "../model/user-orm.js";
-import { checkUserName, validateUser } from "../model/repository.js";
+import { checkUserName } from "../model/repository.js";
 
 export async function createUser(req, res) {
   try {
