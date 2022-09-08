@@ -1,4 +1,4 @@
-import { ormCreateUser as _createUser } from '../model/user-orm.js'
+import { ormCreateUser as _createUser, ormPatchUser as _patchUser, ormDeleteUser as _deleteUser } from '../model/user-orm.js'
 
 export async function createUser(req, res) {
     try {
@@ -17,5 +17,45 @@ export async function createUser(req, res) {
         }
     } catch (err) {
         return res.status(500).json({message: 'Database failure when creating new user!'})
+    }
+}
+
+export async function patchUser(req, res) {
+    try {
+        const {username, password, newpassword} = req.body;
+        if(username && password) {
+            const resp = await _patchUser(username, password, newpassword);
+            console.log(resp);
+            if(resp.err) {
+                return res.status(400).json({message: 'Could not change password!'});
+            } else {
+                console.log('Password changed successfully!')
+                return res.status(200).json({message: 'Password changed successfully!'});
+            }
+        } else {
+            return res.status(400).json({message: 'Username and/or Password are missing!'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when updating password!'})
+    }
+}
+
+export async function deleteUser(req, res) {
+    try {
+        const {username, password} = req.body;
+        if(usernaem && password) {
+            const resp = await _deleteUser(username, password);
+            console.log(resp);
+            if(resp.err) {
+                return res.status(400).json({message: 'Could not delete account'});
+            } else {
+                console.log('Account deleted successfully!')
+                return res.status(200).json({message: 'Account deleted successfully!'});
+            }
+        } else {
+            return res.status(400).json({message: 'Username and/or Password are missing'});
+        }
+    } catch (err) {
+        return res.status(500).json({message: 'Database failure when deleting account!'})
     }
 }
