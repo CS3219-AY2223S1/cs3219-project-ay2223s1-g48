@@ -16,6 +16,19 @@ export async function createUser(params) {
 }
 
 export async function checkUserName(params) {
-  console.log(UserModel.exists({username: params}));
   return UserModel.exists({username: params})
+}
+
+export async function updateUser(username, password, newPassword) {
+  let user = await UserModel.findOneAndUpdate({username: username}, {password: newPassword}, {returnOriginal: false});
+  console.log(user);
+  return user;
+}
+
+export async function checkUserAccount(username, password) {
+  return UserModel.exists({username:username, password:password})
+}
+
+export async function deleteUser(username, password) {
+  await UserModel.findOneAndDelete({username: username, password: password});
 }

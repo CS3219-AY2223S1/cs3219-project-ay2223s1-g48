@@ -22,9 +22,9 @@ export async function createUser(req, res) {
 
 export async function patchUser(req, res) {
     try {
-        const {username, password, newpassword} = req.body;
+        const {username, password, newPassword} = req.body;
         if(username && password) {
-            const resp = await _patchUser(username, password, newpassword);
+            const resp = await _patchUser(username, password, newPassword);
             console.log(resp);
             if(resp.err) {
                 return res.status(400).json({message: 'Could not change password!'});
@@ -43,7 +43,7 @@ export async function patchUser(req, res) {
 export async function deleteUser(req, res) {
     try {
         const {username, password} = req.body;
-        if(usernaem && password) {
+        if(username && password) {
             const resp = await _deleteUser(username, password);
             console.log(resp);
             if(resp.err) {
