@@ -1,6 +1,6 @@
-import { createMatch } from "./repository.js";
+import { createMatch, checkEmpty, popLatest } from "./repository.js";
 
-//need to separate orm functions from repository to decouple business logic from persistence
+// separate orm functions from repository
 export async function ormCreateMatch(username, difficulty) {
   try {
     const newMatch = await createMatch(username, difficulty);
@@ -9,4 +9,12 @@ export async function ormCreateMatch(username, difficulty) {
     console.log("ERROR: Could not create new match");
     return { err };
   }
+}
+
+export async function ormCheckEmpty() {
+  return await checkEmpty();
+}
+
+export async function ormPopLatest() {
+  return await popLatest();
 }
