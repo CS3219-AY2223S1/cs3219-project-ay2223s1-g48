@@ -3,11 +3,11 @@ import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import {
-  ormCreateMatch,
-  ormPopLatest,
-  ormCheckExists,
-  ormCheckDifficultyExists,
-  ormPopLatestDifficulty,
+  createMatch,
+  popLatest,
+  checkExists,
+  checkDifficultyExists,
+  popLatestDifficulty,
 } from "./model/matching-orm.js";
 
 var matchedRoomId = 0;
@@ -32,16 +32,20 @@ io.on("connection", (socket) => {
   console.log("listening on :8001");
 
   socket.on("match", async function (data) {
-    if (await ormCheckDifficultyExists(data.difficulty)) {
+    if (await checkDifficultyExists(data.difficulty)) {
       // there exists some match in database with same difficulty
-      var matched_sid = await ormPopLatestDifficulty(data.difficulty);
-      socket.to(matched_sid).emit("matchSuccess", matchedRoomId);
-      socket.to(socket.id).emit("matchSuccess", matchedRoomId);
-      console.log("matched " + matched_sid + " with " + socket.id);
+      const socketID = await popLatestDifficulty(data.difficulty);
+      socket.to(socketID).emit("matchSuccess", matchedRoomId);
+      socket.to(socketID).emit("matchSuccess", matchedRoomId);
+      console.log("matched " + socketID + " with " + socket.id);
       matchedRoomId++;
     } else {
       // no matches in database with same difficulty
-      await ormCreateMatch(data.username, data.difficulty, socket.id);
+      await createMatch(data.username, data.difficulty, socket.id);
+
+      // set 30s timer
+      // end of 30s,
+      // emit match fail event
     }
   });
 });
