@@ -12,11 +12,13 @@ sequelize
 
 // separate orm functions from repository
 export async function createMatch(uname, diff, sid) {
-  await Match.create({
+  const match = await Match.create({
     username: uname,
     difficulty: diff,
     socketID: sid,
   });
+
+  return match.id;
 
   // const matches = await Match.findAll();
   // console.log("All matches:", JSON.stringify(matches, null, 2));
@@ -42,6 +44,33 @@ export async function checkDifficultyExists(diff) {
   }
 }
 
+export async function checkIDExists(id) {
+  const match = await Match.findOne({
+    where: { id: id },
+  });
+  if (match === null) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export async function removeByID(id) {
+  const num_removed = await Match.destroy({
+    where: {
+      id: id,
+    },
+  });
+
+  if (num_removed == 1) {
+    return true;
+  } else if (num_removed == 0) {
+    return false;
+  } else {
+    throw "Database remove error!";
+  }
+}
+
 // relies on timestamp
 export async function popLatest() {
   const match = await Match.findOne({
@@ -49,13 +78,19 @@ export async function popLatest() {
     order: [["createdAt", "ASC"]],
   });
 
+  const curr_id = match.id;
   const curr_username = match.username;
   const curr_difficulty = match.difficulty;
   const curr_socketID = match.socketID;
 
   match.destroy();
 
-  return curr_socketID;
+  return buildMatchInstance(
+    curr_id,
+    curr_username,
+    curr_difficulty,
+    curr_socketID
+  );
 }
 
 export async function popLatestDifficulty(diff) {
@@ -64,11 +99,26 @@ export async function popLatestDifficulty(diff) {
     order: [["createdAt", "ASC"]],
   });
 
+  const curr_id = match.id;
   const curr_username = match.username;
   const curr_difficulty = match.difficulty;
   const curr_socketID = match.socketID;
 
   match.destroy();
 
-  return curr_socketID;
+  return buildMatchInstance(
+    curr_id,
+    curr_username,
+    curr_difficulty,
+    curr_socketID
+  );
+}
+
+function buildMatchInstance(id, username, difficulty, socketID) {
+  return Match.build({
+    id: id,
+    username: username,
+    difficulty: difficulty,
+    socketID: socketID,
+  });
 }
