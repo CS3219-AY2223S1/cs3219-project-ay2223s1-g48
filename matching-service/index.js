@@ -40,9 +40,9 @@ io.on("connection", (socket) => {
       // there exists some match in database with same difficulty
       const match = await matchORM.popLatestDifficulty(data.difficulty);
 
-      socket.to(data.socketID).emit("matchSuccess", matchedRoomId);
+      socket.to(socket.id).emit("matchSuccess", matchedRoomId);
       socket.to(match.socketID).emit("matchSuccess", matchedRoomId);
-      console.log("matched " + match.username + " with " + data.username);
+      console.log("matched " + match.username + "at socketID " + match.socketID + " with " + data.username + "at socketID " + socket.id);
       matchedRoomId++;
     } else {
       // no matches in database with same difficulty
@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
         if (curr_match_exists) {
           // exists in database
           await matchORM.removeByID(matchID);
-          socket.to(data.socketID).emit("matchFail");
+          socket.to(socket.id).emit("matchFail");
           console.log("match failed for " + data.username);
         } else {
           // does not exist in database, match made
@@ -67,12 +67,4 @@ io.on("connection", (socket) => {
       }, 30000);
     }
   });
-});
-
-  socket.timeout(5000).on('matching', elem1 => {
-    console.log(elem1);
-    setTimeout(async function () {
-      socket.emit("matchSuccess");
-    }, 5000);
-  })
 });

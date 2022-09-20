@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import MatchingRoom from "./MatchingRoom"
 
 const MatchingPage = () => {
+    // User information
+    const [username, setUsername] = useState(Math.random().toString())    
     // Difficulty selection and confirmation
     const [selection, setSelection] = useState(null);
     const [isConfirm, setConfirmation] = useState(false);
@@ -20,32 +22,39 @@ const MatchingPage = () => {
     const [showMatchFailed, setShowMatchFailed] = useState(false);
     // Create socket.io client
     // const [time, setTime] = React.useState('fetching');
-    const socket = io('http://localhost:8001')
+    const [socket, setSocket] = useState(null)
+    
     useEffect(()=>{
-        socket.on('connect', () => {
+        const socket = io('http://localhost:8001')
+        setSocket(socket)
+        socket.on("connect", () => {
             console.log(socket.id)
-            socket.emit('salutations', 'salute')
         })
-        socket.on('connect_error', ()=>{
+        socket.on("connect_error", ()=>{
           setTimeout(()=>socket.connect(),8001)
         })
-    },[])
+        socket.on("matchSuccess", () => {
+            // move on to next page
+            // roomID => similar to some socket thing
+            console.log("Match has succeeded")
+            navigate(MatchingRoom, {
+                username : 'John',
+                difficulty : selection })
+        })
+        socket.on("matchFail", () => {
+            console.log("Match has failed")
+            // reveal reset and retry buttons
+            setShowMatchFailed(true);
+        })
+        return () => {
+            socket.off("connect")
+            socket.off("connect_error")
+            socket.off("matchSuccess")
+            socket.off("matchFail")
+        }
+    },[setSocket])
 
     const navigate = useNavigate()
-
-    // test code
-    socket.on('matchSuccess', elem1 => {
-        console.log(elem1)
-        // move on to next page
-        // roomID => similar to some socket thing
-        navigate(MatchingRoom, {
-            username : 'John',
-            difficulty : selection })
-    })
-    socket.on('matchFail', () => {
-        // reveal reset and retry buttons
-        setShowMatchFailed(true);
-    })
 
     // Creates matching page for selection and confirmation
     const handleSelection = (selected) => {
@@ -71,7 +80,8 @@ const MatchingPage = () => {
             setConfirmation(true);
             setShowMatchingPage(false);
             setShowPopUp(true);
-            socket.emit('matching', { username : "John", difficulty : selection })
+            socket.emit('match', { username : username, difficulty : selection })
+            //socket.emit('match', { username : "John", difficulty : selection })
         } else {
             console.log("selection is null")
         }
@@ -116,17 +126,17 @@ const MatchingPage = () => {
         </div>
     }
 
-    // Creates popup if confirmation is made after selection
-    useEffect (() => {
-        if (showPopUp) {
-            const timer = setTimeout(() => {
-                setShowMatchFailed(true);
-                console.log("timed");
-            }, 30000);
+    // // Creates popup if confirmation is made after selection
+    // useEffect (() => {
+    //     if (showPopUp) {
+    //         const timer = setTimeout(() => {
+    //             // setShowMatchFailed(true);
+    //             console.log("timed");
+    //         }, 29999);
             
-            return () => clearTimeout(timer);
-        }
-    }, [showPopUp, showMatchFailed]);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [showPopUp, showMatchFailed]);
 
     let popup = null;
     if (showPopUp) {

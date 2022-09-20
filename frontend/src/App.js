@@ -5,16 +5,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import SignupPage from "./components/SignupPage";
-import MatchingPage from "./components/MatchingPage";
-import { Box } from "@mui/material";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
+import MatchingPage from "./components/MatchingPage";
 import { Box } from "@mui/material";
 import React, { Component } from "react";
 import HomePage from "./components/HomePage";
