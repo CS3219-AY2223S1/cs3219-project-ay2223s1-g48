@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
       // there exists some match in database with same difficulty
       const match = await matchORM.popLatestDifficulty(data.difficulty);
 
-      socket.to(socket.id).emit("matchSuccess", matchedRoomId);
+      socket.emit("matchSuccess", matchedRoomId);
       socket.to(match.socketID).emit("matchSuccess", matchedRoomId);
       console.log("matched " + match.username + " with " + data.username);
       matchedRoomId++;
@@ -55,7 +55,7 @@ io.on("connection", (socket) => {
         if (curr_match_exists) {
           // exists in database
           await matchORM.removeByID(matchID);
-          socket.to(socket.id).emit("matchFail");
+          socket.emit("matchFail");
           console.log("match failed for " + data.username);
         } else {
           // does not exist in database, match made
