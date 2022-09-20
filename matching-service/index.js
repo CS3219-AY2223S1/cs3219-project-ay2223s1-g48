@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
 
       socket.emit("matchSuccess", matchedRoomId);
       socket.to(match.socketID).emit("matchSuccess", matchedRoomId);
-      console.log("matched " + match.username + "at socketID " + match.socketID + " with " + data.username + "at socketID " + socket.id);
+      console.log("matched " + match.username + "at difficulty " + match.difficulty + " with " + data.username + "at difficulty " + data.difficulty);
       matchedRoomId++;
     } else {
       // no matches in database with same difficulty

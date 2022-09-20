@@ -23,8 +23,9 @@ const MatchingPage = () => {
     // Create socket.io client
     // const [time, setTime] = React.useState('fetching');
     const [socket, setSocket] = useState(null)
-    
-    useEffect(()=>{
+    const navigate = useNavigate()
+
+    useEffect(() => {
         const socket = io('http://localhost:8001')
         setSocket(socket)
         socket.on("connect", () => {
@@ -33,13 +34,10 @@ const MatchingPage = () => {
         socket.on("connect_error", ()=>{
           setTimeout(()=>socket.connect(),8001)
         })
-        socket.on("matchSuccess", () => {
-            // move on to next page
-            // roomID => similar to some socket thing
+        socket.on("matchSuccess", (elem1) => {
+            // Navigate to Matching Room
             console.log("Match has succeeded")
-            navigate(MatchingRoom, {
-                username : 'John',
-                difficulty : selection })
+            navigate("/matchingroom", { state : { username : username, matchedRoomId : elem1 } })
         })
         socket.on("matchFail", () => {
             console.log("Match has failed")
@@ -53,8 +51,6 @@ const MatchingPage = () => {
             socket.off("matchFail")
         }
     },[setSocket])
-
-    const navigate = useNavigate()
 
     // Creates matching page for selection and confirmation
     const handleSelection = (selected) => {
@@ -76,14 +72,12 @@ const MatchingPage = () => {
 
     const handleConfirmation = () => {
         if (selection !== null) {
-            console.log("selection is not null");
             setConfirmation(true);
             setShowMatchingPage(false);
             setShowPopUp(true);
             socket.emit('match', { username : username, difficulty : selection })
-            //socket.emit('match', { username : "John", difficulty : selection })
         } else {
-            console.log("selection is null")
+            // You should not have selection == null
         }
     };
 
@@ -99,6 +93,7 @@ const MatchingPage = () => {
     const handleRepeat = () => {
         setShowMatchFailed(false);
         setShowPopUp(false);
+        socket.emit('match', { username : username, difficulty : selection })
         const refreshTimer = setTimeout(() => {
             setShowPopUp(true);
         }, 1);
@@ -126,18 +121,6 @@ const MatchingPage = () => {
         </div>
     }
 
-    // // Creates popup if confirmation is made after selection
-    // useEffect (() => {
-    //     if (showPopUp) {
-    //         const timer = setTimeout(() => {
-    //             // setShowMatchFailed(true);
-    //             console.log("timed");
-    //         }, 29999);
-            
-    //         return () => clearTimeout(timer);
-    //     }
-    // }, [showPopUp, showMatchFailed]);
-
     let popup = null;
     if (showPopUp) {
         popup = <div className="popup">
@@ -151,7 +134,6 @@ const MatchingPage = () => {
     return (  
         <div className="MatchingPage">
             <Navbar />
-            {/* { time } */}
             { !isConfirm && matchingpage }
             { isConfirm && popup }
             { showMatchFailed && <div className="matchfailed">

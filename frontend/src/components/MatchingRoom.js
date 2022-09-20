@@ -1,17 +1,14 @@
-import { Route } from "react-router-dom";
-import { useState } from 'react';
+import React from "react";
+import { useLocation } from "react-router-dom";
 
-const MatchingRoom = (route) => {
-    const { username, difficulty  }= route.params
-    const [usernameStr, setUsernameStr] = useState(JSON.stringify(username));
-    const [difficultyStr, setDifficultyStr] = useState(JSON.stringify(difficulty));
+const MatchingRoom = () => {
+    const location = useLocation()
     return ( 
         <div>
             <h1>
-                Welcome { usernameStr }!
+                Welcome { location.state.username }, to matching room { location.state.matchedRoomId }!
             </h1>
             <h2>
-                You selected { difficultyStr }. Prepare to answer the question!
             </h2>
         </div>
     );
