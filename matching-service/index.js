@@ -17,9 +17,12 @@ app.get("/", (req, res) => {
 });
 
 const httpServer = createServer(app);
+httpServer.listen(8001);
 
 const io = new Server(httpServer, {
-  /* options */
+  cors: {
+    origin: 'http://localhost:3000'
+  }
 });
 
 io.on("connection", (socket) => {
@@ -39,7 +42,7 @@ io.on("connection", (socket) => {
 
       socket.emit("matchSuccess", matchedRoomId);
       socket.to(match.socketID).emit("matchSuccess", matchedRoomId);
-      console.log("matched " + match.username + " with " + data.username);
+      console.log("matched " + match.username + "at difficulty " + match.difficulty + " with " + data.username + "at difficulty " + data.difficulty);
       matchedRoomId++;
     } else {
       // no matches in database with same difficulty
@@ -65,5 +68,3 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-httpServer.listen(8001);
