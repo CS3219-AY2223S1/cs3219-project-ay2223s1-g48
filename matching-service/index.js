@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { ormCreateMatch } from "./model/matching-orm.js";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -15,17 +14,25 @@ app.get("/", (req, res) => {
 });
 
 const httpServer = createServer(app);
+httpServer.listen(8001);
 
 const io = new Server(httpServer, {
-  /* options */
+  cors: {
+    origin: 'http://localhost:3000'
+  }
 });
 
 io.on("connection", (socket) => {
   console.log("listening on :8001");
 
-  socket.on("match", function (data) {
-    ormCreateMatch(data.username, data.difficulty);
-  });
-});
+  socket.on('salutations', elem1 => {
+    console.log(elem1);
+  })
 
-httpServer.listen(8001);
+  socket.timeout(5000).on('matching', elem1 => {
+    console.log(elem1);
+    setTimeout(async function () {
+      socket.emit("matchSuccess");
+    }, 5000);
+  })
+});

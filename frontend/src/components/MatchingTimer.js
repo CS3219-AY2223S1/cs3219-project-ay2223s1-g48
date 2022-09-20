@@ -45,7 +45,7 @@ const MatchingTimer = () => {
         // If you adjust it you should also need to
         // adjust the Endtime formula we are about
         // to code next    
-        setTimer('00:00:05');
+        setTimer('00:00:30');
   
         // If you try to remove this line the 
         // updating of timer Variable will be
@@ -62,7 +62,7 @@ const MatchingTimer = () => {
   
         // This is where you need to adjust if 
         // you entend to add more time
-        deadline.setSeconds(deadline.getSeconds() + 5);
+        deadline.setSeconds(deadline.getSeconds() + 30);
         return deadline;
     }
   
