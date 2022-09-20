@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import MatchingRoom from "./MatchingRoom"
 
 const MatchingPage = () => {
+    // User information
+    const [username, setUsername] = useState(Math.random().toString())    
     // Difficulty selection and confirmation
     const [selection, setSelection] = useState(null);
     const [isConfirm, setConfirmation] = useState(false);
@@ -20,32 +22,35 @@ const MatchingPage = () => {
     const [showMatchFailed, setShowMatchFailed] = useState(false);
     // Create socket.io client
     // const [time, setTime] = React.useState('fetching');
-    const socket = io('http://localhost:8001')
-    useEffect(()=>{
-        socket.on('connect', () => {
-            console.log(socket.id)
-            socket.emit('salutations', 'salute')
-        })
-        socket.on('connect_error', ()=>{
-          setTimeout(()=>socket.connect(),8001)
-        })
-    },[])
-
+    const [socket, setSocket] = useState(null)
     const navigate = useNavigate()
 
-    // test code
-    socket.on('matchSuccess', elem1 => {
-        console.log(elem1)
-        // move on to next page
-        // roomID => similar to some socket thing
-        navigate(MatchingRoom, {
-            username : 'John',
-            difficulty : selection })
-    })
-    socket.on('matchFail', () => {
-        // reveal reset and retry buttons
-        setShowMatchFailed(true);
-    })
+    useEffect(() => {
+        const socket = io('http://localhost:8001')
+        setSocket(socket)
+        socket.on("connect", () => {
+            console.log(socket.id)
+        })
+        socket.on("connect_error", ()=>{
+          setTimeout(()=>socket.connect(),8001)
+        })
+        socket.on("matchSuccess", (elem1) => {
+            // Navigate to Matching Room
+            console.log("Match has succeeded")
+            navigate("/matchingroom", { state : { username : username, matchedRoomId : elem1 } })
+        })
+        socket.on("matchFail", () => {
+            console.log("Match has failed")
+            // reveal reset and retry buttons
+            setShowMatchFailed(true);
+        })
+        return () => {
+            socket.off("connect")
+            socket.off("connect_error")
+            socket.off("matchSuccess")
+            socket.off("matchFail")
+        }
+    },[setSocket])
 
     // Creates matching page for selection and confirmation
     const handleSelection = (selected) => {
@@ -67,13 +72,12 @@ const MatchingPage = () => {
 
     const handleConfirmation = () => {
         if (selection !== null) {
-            console.log("selection is not null");
             setConfirmation(true);
             setShowMatchingPage(false);
             setShowPopUp(true);
-            socket.emit('matching', { username : "John", difficulty : selection })
+            socket.emit('match', { username : username, difficulty : selection })
         } else {
-            console.log("selection is null")
+            // You should not have selection == null
         }
     };
 
@@ -89,6 +93,7 @@ const MatchingPage = () => {
     const handleRepeat = () => {
         setShowMatchFailed(false);
         setShowPopUp(false);
+        socket.emit('match', { username : username, difficulty : selection })
         const refreshTimer = setTimeout(() => {
             setShowPopUp(true);
         }, 1);
@@ -116,18 +121,6 @@ const MatchingPage = () => {
         </div>
     }
 
-    // Creates popup if confirmation is made after selection
-    useEffect (() => {
-        if (showPopUp) {
-            const timer = setTimeout(() => {
-                setShowMatchFailed(true);
-                console.log("timed");
-            }, 30000);
-            
-            return () => clearTimeout(timer);
-        }
-    }, [showPopUp, showMatchFailed]);
-
     let popup = null;
     if (showPopUp) {
         popup = <div className="popup">
@@ -141,7 +134,6 @@ const MatchingPage = () => {
     return (  
         <div className="MatchingPage">
             <Navbar />
-            {/* { time } */}
             { !isConfirm && matchingpage }
             { isConfirm && popup }
             { showMatchFailed && <div className="matchfailed">
