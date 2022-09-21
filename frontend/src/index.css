@@ -52,6 +52,7 @@ code {
   margin: 40px auto;
   padding: 20px;
   justify-items: auto;
+  justify-content: space-between;
 }
 .selectionbuttons {
   padding: 20px;
@@ -59,7 +60,6 @@ code {
   align-items: flex;
   max-width: 600px;
   margin: 0 auto;
-  justify-content: space-between;
 }
 .selectionbutton {
   background-color: #f1356d;
