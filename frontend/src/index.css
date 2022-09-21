@@ -64,7 +64,6 @@ code {
 .selectionbutton {
   background-color: #f1356d;
   color: #f2f2f2;
-  font-family: "Quicksand";
   font-size: 20px;
   padding: 10px 60px;
   border-radius: 10px;
@@ -74,7 +73,6 @@ code {
 .selectionbutton:disabled {
   background-color: grey;
   color: #f2f2f2;
-  font-family: "Quicksand";
   font-size: 20px;
   padding: 10px 60px;
   border-radius: 10px;
@@ -99,19 +97,54 @@ code {
 .confirmbutton {
   background-color: #f1356d;
   color: #f2f2f2;
-  font-family: "Quicksand";
   font-size: 20px;
   padding: 10px 220px;
   border-radius: 10px;
   cursor: pointer;
   border-color: #f1356d;
 }
-.matchstartmessage p{
-  background-color: #333;
-  color: #f2f2f2;
-  font-family: "Quicksand";
-  font-size: 18px;
-  padding: 20px 20px;
-  padding-left: 100px;
+.popup {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  justify-items: auto;
+  background-color:#333;
   border-radius: 10px;
+  display:flex;
+}
+.popup h1 {
+  color: #f2f2f2;
+  font-size: 18px;
+  flex: auto;
+}
+.MatchingTimer h2{
+  color: #f2f2f2;
+  font-size: 18px;
+  flex:auto;
+}
+.MatchingTimer {
+  margin-left: 120px;
+  margin-right: 10px;
+}
+.matchfailed{
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  justify-items: auto;
+}
+.matchfailedbuttons {
+  padding: 5px;
+  display: flex;
+  align-items: flex;
+  margin: auto auto;
+  justify-content: space-between;
+}
+.matchfailedbutton {
+  background-color: #f1356d;
+  color: #f2f2f2;
+  font-size: 20px;
+  padding: 10px 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  border-color: #f1356d;
 }

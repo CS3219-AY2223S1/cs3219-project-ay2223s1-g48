@@ -6,10 +6,12 @@ import {
 } from "react-router-dom";
 import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import MatchingPage from "./components/MatchingPage";
+import MatchingRoom from "./components/MatchingRoom";
 import { Box } from "@mui/material";
 import React, { Component } from "react";
-import HomePage from "./components/HomePage";
-import MatchingPage from './components/MatchingPage';
+
 
 function App() {
   return (
@@ -25,7 +27,8 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home/:username" element={<HomePage />} />
-            <Route path="/matching" element={<MatchingPage/>}/>
+            <Route path="/matching" element={<MatchingPage />} />
+            <Route path="/matchingroom" element={<MatchingRoom />} />
           </Routes>
         </Router>
       </Box>

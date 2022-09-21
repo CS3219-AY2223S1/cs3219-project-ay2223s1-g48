@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import Cookies from "universal-cookie";
 import {
   Box,
   Button,
@@ -76,10 +77,15 @@ const LoginPage = () => {
       });
 
     if (res && res.status === STATUS_CODE_LOGIN_SUCCESSFUL) {
-      setIsLoginSucess(true);
-    }
-    if (isLoginSuccess) {
-      navigate(`/home/${username}`, { state: { username: username } }); //delete state if no need in the future
+      //setIsLoginSucess(true);
+      //if (isLoginSuccess) {
+      console.log(res);
+      const jwt = res.data.jwt;
+      const cookies = new Cookies();
+      cookies.set("jwt", jwt, { httpOnly: true });
+      console.log(cookies);
+      navigate(`/home/${username}`); //delete state if no need in the future
+      //}
     }
   };
   return (

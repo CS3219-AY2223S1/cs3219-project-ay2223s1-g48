@@ -15,6 +15,7 @@ let db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 export async function createUser(params) {
+  console.log(params);
   return new UserModel(params);
 }
 
@@ -22,17 +23,20 @@ export async function checkUserName(params) {
   return UserModel.exists({ username: params });
 }
 
-export async function validateUser(params) {
-  return UserModel.find({ username: params.username }).then((collection) => {
-    if (collection.length > 1) {
-      //TODO: throw error about duplicate usernames in database
-      return false;
-    }
+export async function updateUser(username, password, newPassword) {
+  let user = await UserModel.findOneAndUpdate(
+    { username: username },
+    { password: newPassword },
+    { returnOriginal: false }
+  );
+  console.log(user);
+  return user;
+}
 
-    if (collection.length < 1) {
-      return false;
-    }
+export async function checkUserAccount(username, password) {
+  return UserModel.exists({ username: username, password: password });
+}
 
-    return collection[0].password === params.password;
-  });
+export async function deleteUser(username, password) {
+  await UserModel.findOneAndDelete({ username: username, password: password });
 }
