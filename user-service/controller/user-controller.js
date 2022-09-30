@@ -104,3 +104,5 @@ export async function deleteUser(req, res) {
       .json({ message: "Database failure when deleting account!" });
   }
 }
+
+export async function getUser(req, res) {}

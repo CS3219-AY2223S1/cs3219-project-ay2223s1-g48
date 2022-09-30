@@ -57,9 +57,11 @@ code {
 .selectionbuttons {
   padding: 20px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: flex;
   max-width: 600px;
   margin: 0 auto;
+  justify-content: space-around;
 }
 .selectionbutton {
   background-color: #f1356d;
@@ -69,6 +71,7 @@ code {
   border-radius: 10px;
   cursor: pointer;
   border-color: #f1356d;
+  margin: 10px;
 }
 .selectionbutton:disabled {
   background-color: grey;

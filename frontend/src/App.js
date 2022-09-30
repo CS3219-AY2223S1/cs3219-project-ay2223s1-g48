@@ -12,7 +12,6 @@ import MatchingRoom from "./components/MatchingRoom";
 import { Box } from "@mui/material";
 import React, { Component } from "react";
 
-
 function App() {
   return (
     <div className="App">
@@ -27,8 +26,8 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home/:username" element={<HomePage />} />
-            <Route path="/matching" element={<MatchingPage />} />
             <Route path="/matchingroom" element={<MatchingRoom />} />
+            <Route path="/matching/:username" element={<MatchingPage />} />
           </Routes>
         </Router>
       </Box>

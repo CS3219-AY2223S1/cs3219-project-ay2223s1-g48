@@ -5,7 +5,6 @@ import {
   checkUserAccount,
   deleteUser,
 } from "./repository.js";
-import { createUser, checkUserName } from "./repository.js";
 import UserModel from "./user-model.js";
 
 import bcrypt from "bcrypt";

@@ -84,7 +84,9 @@ const LoginPage = () => {
       const cookies = new Cookies();
       cookies.set("jwt", jwt, { httpOnly: true });
       console.log(cookies);
-      navigate(`/home/${username}`); //delete state if no need in the future
+      navigate(`/matching/${username}`, {
+        state: { cookies: cookies },
+      }); //delete state if no need in the future
       //}
     }
   };
