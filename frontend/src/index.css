@@ -151,3 +151,30 @@ code {
   cursor: pointer;
   border-color: #f1356d;
 }
+.titles {
+  display: flex;
+}
+.title {
+}
+.returnbutton {
+  margin-left: auto;
+}
+.services {
+  display: flex;
+}
+.collabservice {
+  width: 50%;
+}
+.topbottom {
+  width: 50%;
+  display: grid;
+  grid-template-rows: auto auto;
+}
+.questionservice {
+}
+.communicationservice {
+}
+.titleandservices {
+  display: grid;
+  grid-template-rows: auto auto;
+}
