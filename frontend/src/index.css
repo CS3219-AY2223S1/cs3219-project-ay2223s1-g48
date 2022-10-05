@@ -190,6 +190,9 @@ code {
   width: 680px;
   height: 320px;
   padding: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
 }
 .communicationservice {
   width: 680px;

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const MatchingRoom = () => {
     const messages = "dummy test"
+    const question = "dummy question"
     const navigate = useNavigate()
     const handleReturn = () => {
         navigate("/matching/" + location.state.username, {
@@ -26,9 +27,9 @@ const MatchingRoom = () => {
                 </div>
                 <div className="topbottom">
                     <div className="questionservice">
-                        <textarea className="question" placeholder="Your question goes here...">
-
-                        </textarea>
+                        <ul className="question">
+                            { question }
+                        </ul>
                     </div>
                     <div className="communicationservice">
                         <ul className="chatbox">
