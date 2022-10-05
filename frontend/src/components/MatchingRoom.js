@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 const MatchingRoom = () => {
     const navigate = useNavigate()
     const handleReturn = () => {
-        navigate("/matching")
+        navigate("/matching/" + location.state.username, {
+            state: { cookies: location.state.cookies },
+          });
     }
     const location = useLocation()
     return ( 

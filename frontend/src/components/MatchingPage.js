@@ -20,7 +20,6 @@ import {
 const MatchingPage = () => {
   // User information
   const [username, setUsername] = useState(window.location.pathname.slice(10));
-  console.log(username);
   // Difficulty selection and confirmation
   const [selection, setSelection] = useState(null);
   const [isConfirm, setConfirmation] = useState(false);
@@ -56,7 +55,7 @@ const MatchingPage = () => {
       // Navigate to Matching Room
       console.log("Match has succeeded");
       navigate("/matchingroom", {
-        state: { username: username, matchedRoomId: elem1 },
+        state: { username: username, matchedRoomId: elem1, cookies: cookies },
       });
     });
     socket.on("matchFail", () => {
