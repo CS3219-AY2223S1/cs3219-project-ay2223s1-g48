@@ -19,7 +19,8 @@ import {
 
 const MatchingPage = () => {
   // User information
-  const [username, setUsername] = useState(Math.random().toString());
+  const [username, setUsername] = useState(window.location.pathname.slice(10));
+  console.log(username);
   // Difficulty selection and confirmation
   const [selection, setSelection] = useState(null);
   const [isConfirm, setConfirmation] = useState(false);
