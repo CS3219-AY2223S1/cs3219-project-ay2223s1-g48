@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 const Navbar = (props) => {
   return (
     <nav className="navbar">
-      <h1>Matching Service {props.params.username}</h1>
+      <h1>PeerPrep {props.params.username}</h1>
       <div className="links">
         <Link
-          to="/"
+          to="/login"
           style={{
             color: "white",
             backgroundColor: "#f1356d",
