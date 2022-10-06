@@ -1,3 +1,5 @@
+import Logo from "../Images/logo.svg";
+
 import React from "react";
 import { useState } from "react";
 import Cookies from "universal-cookie";
@@ -9,6 +11,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,6 +31,8 @@ import {
 } from "../constants";
 import { Link } from "react-router-dom";
 import HomePage from "./HomePage";
+import { margin } from "@mui/system";
+import styled from "@emotion/styled";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -90,50 +95,116 @@ const LoginPage = () => {
       //}
     }
   };
+
+  const backToLandingPage = () => {
+    navigate("/");
+  };
+
+  const StyledTextField = styled(TextField, {
+    shouldForwardProp: (props) => props !== "focusColor",
+  })((p) => ({
+    // input label when focused
+    "& label.Mui-focused": {
+      color: p.focusColor,
+    },
+    "& .MuiFormLabel-root.Mui-error": {
+      color: "#3514DC",
+    },
+
+    // focused color for input with variant='standard'
+    "& .MuiInput-underline:after": {
+      borderBottomColor: p.focusColor,
+    },
+    // focused color for input with variant='filled'
+    "& .MuiFilledInput-underline:after": {
+      borderBottomColor: p.focusColor,
+    },
+    // focused color for input with variant='outlined'
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: p.focusColor,
+      },
+      "&.Mui-error fieldset": {
+        borderColor: "#3514DC",
+      },
+      "&:hover fieldset": {
+        borderColor: "rgba(250, 106, 60, 0.50)",
+      },
+      "& fieldset": {
+        borderColor: "rgba(250, 106, 60, 0.25)",
+        borderRadius: "12px",
+      },
+    },
+  }));
+
   return (
-    <Box display={"flex"} flexDirection={"column"} width={"30%"}>
-      <Typography variant={"h3"} marginBottom={"2rem"}>
-        Login
-      </Typography>
+    <div className="background">
+      <img src={Logo} alt="logo" id="logo-login" onClick={backToLandingPage} />
+      <div id="pop-up-login">
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          width={"80%"}
+          margin={"auto"}
+          marginTop={"5%"}
+        >
+          <h3>Login to start coding and collaborating!</h3>
+          <h6>
+            New to Peerprep? <a href="/signup">Create new account</a>
+          </h6>
+          <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
+            <StyledTextField
+              focusColor="rgba(250, 106, 60, 0.60)"
+              label="Email"
+              variant="outlined"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              sx={{ marginBottom: "1rem" }}
+              autoFocus
+              error={error && error.username ? true : false}
+              helperText={
+                error && error.username ? "Please enter your username" : ""
+              }
+              required
+            />
+            <StyledTextField
+              focusColor="rgba(250, 106, 60, 0.60)"
+              label="Password"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{ marginBottom: "2rem" }}
+              error={error && error.password ? true : false}
+              required
+              helperText={
+                error && error.password ? "Please enter your password" : ""
+              }
+            />
+          </FormControl>
 
-      <TextField
-        label="Username"
-        variant="standard"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        sx={{ marginBottom: "1rem" }}
-        autoFocus
-        error={error && error.username ? true : false}
-        helperText={error && error.username ? "Please enter your username" : ""}
-        required
-      />
-      <TextField
-        label="Password"
-        variant="standard"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ marginBottom: "2rem" }}
-        error={error && error.password ? true : false}
-        required
-        helperText={error && error.password ? "Please enter your password" : ""}
-      />
-      <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
-        <Button variant={"outlined"} onClick={handleLogin}>
-          Log In
-        </Button>
-      </Box>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"flex-end"}
+          >
+            <button className="button-secondary" onClick={handleLogin}>
+              Log In
+            </button>
+          </Box>
 
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{dialogMsg}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {<Button onClick={closeDialog}>OK</Button>}
-        </DialogActions>
-      </Dialog>
-    </Box>
+          <Dialog open={isDialogOpen} onClose={closeDialog}>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{dialogMsg}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              {<Button onClick={closeDialog}>OK</Button>}
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </div>
+    </div>
   );
 };
 
