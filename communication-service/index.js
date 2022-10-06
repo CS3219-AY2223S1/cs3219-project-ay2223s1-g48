@@ -18,6 +18,19 @@ httpServer.listen(8081);
 
 const io = new Server(httpServer, {
     cors: {
-        origin: 'http://localhost:8081'
+        origin: 'http://localhost:3000'
     }
+});
+
+io.on("connection", (socket) => {
+    console.log("listening on: 8081")
+    socket.on("sendMessage", async function (data) {
+        if (
+            !(data.hasOwnProperty("input") && data.hasOwnProperty("roomId"))
+        ) {
+            throw "data sent does not have required information!";
+        }
+        console.log("This is the input: " + data.input);
+        console.log("This is the roomId: " + data.roomId);
+    })
 });
