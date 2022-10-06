@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MatchingRoom = () => {
-    const messages = "Session started: " + Date().toLocaleString()
-    const question = "dummy question"
+    const [messages, setMessages] = useState("Session started: " + Date().toLocaleString())
+    const [question, setQuestion] = useState("dummy question")
     const navigate = useNavigate()
     const handleReturn = () => {
         navigate("/matching/" + location.state.username, {
@@ -17,7 +17,7 @@ const MatchingRoom = () => {
         // console.log('value is:', event.target.value)
     }
     const handleSend = () => {
-        console.log('message is:', input)
+        setMessages(messages + "\n" + location.state.username + ": " + input)
         setInput('')
     }
     const location = useLocation()
