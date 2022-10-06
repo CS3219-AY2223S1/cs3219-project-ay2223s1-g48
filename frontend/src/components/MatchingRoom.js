@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MatchingRoom = () => {
-    const [messages, setMessages] = useState("Session started: " + Date().toLocaleString())
+    const [messages, setMessages] = useState("Session started: " + Date().toLocaleString() + "\n")
     const [question, setQuestion] = useState("dummy question")
     const [input, setInput] = useState('')
     const [socket, setSocket] = useState(null);
