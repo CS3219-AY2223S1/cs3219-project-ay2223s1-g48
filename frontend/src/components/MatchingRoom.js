@@ -1,8 +1,9 @@
 import React from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MatchingRoom = () => {
-    const messages = "dummy test"
+    const messages = "Session started: " + Date().toLocaleString()
     const question = "dummy question"
     const navigate = useNavigate()
     const handleReturn = () => {
@@ -10,13 +11,22 @@ const MatchingRoom = () => {
             state: { cookies: location.state.cookies },
           });
     }
+    const [input, setInput] = useState('')
+    const handleChange = event => {
+        setInput(event.target.value);
+        // console.log('value is:', event.target.value)
+    }
+    const handleSend = () => {
+        console.log('message is:', input)
+        setInput('')
+    }
     const location = useLocation()
     return (
         <div className="titleandservices">
             <div className="titles">
                 <h1>Welcome { location.state.username }, to matching room { location.state.matchedRoomId }!</h1>
                 <div className="returnbutton">
-                    <button className="returnButton"onClick={() => handleReturn()}>Return</button>
+                    <button className="returnButton" onClick={() => handleReturn()}>Return</button>
                 </div>
             </div>
             <div className="services">
@@ -36,7 +46,7 @@ const MatchingRoom = () => {
                             { messages }
                         </ul>
                         <div className="messageinput">
-                            <input className="input" type="text" /><button className="send">Send</button>
+                            <input className="input" type="text" onChange={handleChange} value={input}/><button className="send" onClick={()=>handleSend()}>Send</button>
                         </div>
                     </div>
                 </div>
