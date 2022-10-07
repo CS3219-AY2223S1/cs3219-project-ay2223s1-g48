@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { renderMatches, useLocation, useNavigate } from "react-router-dom";
 
@@ -8,9 +8,11 @@ const MatchingRoom = () => {
   const [question, setQuestion] = useState("dummy question")
   const [input, setInput] = useState('')
   const [incoming, setIncoming] = useState('')
-  const [socket, setSocket] = useState(null);
+  const [counter, setCounter] = useState(1)
+  const [socket, setSocket] = useState();
   const navigate = useNavigate()
-  
+  const didMount = useRef(true)
+
   useEffect(() => {
     const socket = io("http://localhost:8081");
     setSocket(socket);
@@ -24,7 +26,8 @@ const MatchingRoom = () => {
       if (data.roomId != location.state.matchedRoomId || data.username == location.state.username) {
         // Do nothing
       } else {
-        setIncoming(data.username + ": " + data.input)
+        setIncoming("[" + data.counter + "] " + data.username + ": " + data.input)
+        setCounter(data.counter + 1)
       }
     })
     return () => {
@@ -33,7 +36,13 @@ const MatchingRoom = () => {
       socket.off("receiveMessage");
     };
   }, []);
-  
+  useEffect(() => {
+    if (didMount.current) {
+      didMount.current = false;
+    } else {
+      setMessages(messages + "\n" + incoming)
+    }
+  }, [incoming])
   const handleReturn = () => {
     navigate("/matching/" + location.state.username, {
       state: { cookies: location.state.cookies },
@@ -44,13 +53,12 @@ const MatchingRoom = () => {
     // console.log('value is:', event.target.value)
   }
   const handleSend = () => {
-    setMessages(messages + "\n" + location.state.username + ": " + input)
-    socket.emit("sendMessage", { username: location.state.username, input: input, roomId: location.state.matchedRoomId });
+    setMessages(messages + "\n" + "[" + counter + "] " + location.state.username + ": " + input)
+    setCounter(counter + 1)
+    socket.emit("sendMessage", { username: location.state.username, input: input, roomId: location.state.matchedRoomId, counter: counter });
     setInput('')
   }
-  useEffect(() => {
-    setMessages(messages + "\n" + incoming)
-  }, [incoming])
+
   const location = useLocation()
   return (
     <div className="titleandservices">

@@ -26,13 +26,13 @@ io.on("connection", (socket) => {
     console.log("listening on: 8081")
     socket.on("sendMessage", async function (data) {
         if (
-            !(data.hasOwnProperty("username") && data.hasOwnProperty("input") && data.hasOwnProperty("roomId"))
+            !(data.hasOwnProperty("username") && data.hasOwnProperty("input") && data.hasOwnProperty("roomId") && data.hasOwnProperty("counter"))
         ) {
             throw "data sent does not have required information!";
         }
         console.log("This is the username: " + data.username);
         console.log("This is the input: " + data.input);
         console.log("This is the roomId: " + data.roomId);
-        io.emit("receiveMessage", { username: data.username, input: data.input, roomId: data.roomId })
+        io.emit("receiveMessage", { username: data.username, input: data.input, roomId: data.roomId, counter: data.counter })
     })
 });
