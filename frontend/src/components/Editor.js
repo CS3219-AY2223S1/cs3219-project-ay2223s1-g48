@@ -26,7 +26,7 @@ export default function Editor(props) {
     const yText = ydoc.getText("codemirror");
     const yUndoManager = new Y.UndoManager(yText);
 
-    const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    const editor = CodeMirror(document.getElementById("editor"), {
       mode: "javascript",
       lineNumbers: true,
       // keyMap: "sublime",
@@ -59,7 +59,7 @@ export default function Editor(props) {
 
   return (
     <div>
-      <textarea id="editor"></textarea>
+      <div id="editor"></div>
     </div>
   );
 }
