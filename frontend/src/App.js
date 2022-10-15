@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import SignupPage from "./components/SignupPage";
+import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import MatchingPage from "./components/MatchingPage";
@@ -15,14 +16,10 @@ import React, { Component } from "react";
 function App() {
   return (
     <div className="App">
-      <Box display={"flex"} flexDirection={"column"} padding={"4rem"}>
+      <Box display={"flex"} flexDirection={"column"} padding={"0"}>
         <Router>
           <Routes>
-            <Route
-              exact
-              path="/"
-              element={<Navigate replace to="/signup" />}
-            ></Route>
+            <Route exact path="/" element={<LandingPage />}></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/home/:username" element={<HomePage />} />
