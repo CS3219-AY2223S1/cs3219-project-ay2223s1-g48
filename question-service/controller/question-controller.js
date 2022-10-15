@@ -2,9 +2,26 @@ import {
   ormCreateQuestion as _createQuestion,
   ormGetQuestion as _getQuestion,
   ormDeleteQuestion as _deleteQuestion,
+  ormGetAllQuestion as _getAllQuestion,
 } from '../model/question-orm.js';
 
-export async function getAllQuestion(req, res) {}
+export async function getAllQuestion(req, res) {
+  try {
+    const resp = await _getAllQuestion();
+    if (resp.err) {
+      return res.status(400).json({ message: 'Could no retrieve Question' });
+    } else {
+      console.log('retrieved all questions successfully!');
+      return res.status(200).json({
+        data: resp.questions,
+      });
+    }
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: 'Database failure when retrieving queston' });
+  }
+}
 
 export async function getQuestion(req, res) {
   try {
