@@ -17,33 +17,10 @@ export async function createQuestion(params) {
   console.log(params);
   let paramDifficulty = params.difficulty;
   let question = params.question;
-  let index = 0;
-  let questionCount = await QuestionModel.countDocuments({
-    difficulty: paramDifficulty,
-  });
-  console.log(questionCount);
-  if (questionCount == 0) {
-    index = 1;
-  } else {
-    index = await QuestionModel.find({ difficulty: paramDifficulty })
-      .sort({ index: -1 })
-      .limit(1);
-    index = index[0].index + 1;
-  }
   return new QuestionModel({
-    index: index,
     difficulty: paramDifficulty,
     question: question,
   });
-}
-
-export async function checkQuestionRange(params) {
-  let size = await QuestionModel.countDocuments({
-    difficulty: params.difficulty,
-  });
-  console.log(size);
-  console.log(params.difficulty);
-  return params.index <= size;
 }
 
 export async function getQuestion(difficulty) {
@@ -59,12 +36,22 @@ export async function getAllQuestion() {
   return questions;
 }
 
-export async function deleteQuestion(params) {
+export async function deleteQuestion(id) {
   console.log('deleting question');
-  let paramIndex = params.index;
-  let paramDifficulty = params.difficulty;
-  await QuestionModel.findOneAndDelete({
-    index: paramIndex,
-    difficulty: paramDifficulty,
+  await QuestionModel.remove({
+    _id: id,
   });
+}
+
+export async function viewQuestion(id) {
+  let question = await QuestionModel.findById(id);
+  return question;
+}
+
+export async function updateQuestion(id, difficulty, question) {
+  let dbQuestion = await QuestionModel.findOneAndUpdate(
+    { _id: id },
+    { question: question, difficulty: difficulty }
+  );
+  return dbQuestion;
 }

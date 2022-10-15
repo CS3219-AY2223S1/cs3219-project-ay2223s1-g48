@@ -2,8 +2,9 @@ import {
   createQuestion,
   deleteQuestion,
   getQuestion,
-  checkQuestionRange,
   getAllQuestion,
+  viewQuestion,
+  updateQuestion,
 } from './repository.js';
 
 export async function ormCreateQuestion(difficulty, question) {
@@ -17,19 +18,33 @@ export async function ormCreateQuestion(difficulty, question) {
   }
 }
 
-export async function ormDeleteQuestion(index, difficulty) {
+export async function ormDeleteQuestion(id) {
   try {
-    const inRange = await checkQuestionRange({ index, difficulty });
-    if (inRange) {
-      await deleteQuestion({ index, difficulty });
-      return true;
-    } else {
-      const err = new Error('ERROR: Question index does not exist');
-      console.log(err.message);
-      throw err;
-    }
+    await deleteQuestion(id);
+    return true;
   } catch (err) {
     console.log('ERROR: could not delete question');
+    return { err };
+  }
+}
+
+export async function ormViewQuestion(id) {
+  try {
+    const question = await viewQuestion(id);
+    return { question };
+  } catch (err) {
+    console.log('ERROR: could not view question');
+    return { err };
+  }
+}
+
+export async function ormUpdateQuestion(id, difficulty, question) {
+  try {
+    const updatedQuestion = await updateQuestion(id, difficulty, question);
+    updatedQuestion.save();
+    return true;
+  } catch (err) {
+    console.log('ERROR: could not view question');
     return { err };
   }
 }

@@ -10,14 +10,20 @@ import {
   createQuestion,
   deleteQuestion,
   getAllQuestion,
+  viewQuestion,
+  updateQuestion,
 } from './controller/question-controller.js';
 
 const router = express.Router();
 
 router.get('/', getAllQuestion);
-router.get('/:difficulty', getQuestion);
 router.post('/', createQuestion);
-router.delete('/', deleteQuestion);
+router
+  .route('/:question_id')
+  .get(viewQuestion)
+  .patch(updateQuestion)
+  .delete(deleteQuestion);
+router.get('/random/:difficulty', getQuestion);
 
 app.use('/api/question', router).all((_, res) => {
   res.setHeader('content-type', 'application/json');
