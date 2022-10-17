@@ -108,7 +108,7 @@ export async function viewQuestion(req, res) {
       console.log('Question retrieved successfully!');
       return res
         .status(200)
-        .json({ message: 'Question retrieved successfully!' });
+        .json({ message: 'Question retrieved successfully!', data: resp });
     }
   } catch (err) {
     return res
