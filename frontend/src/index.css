@@ -17,7 +17,7 @@ code {
 /* matching service styles */
 * {
   margin: 0;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   color: #333;
 }
 .navbar {
@@ -108,25 +108,25 @@ code {
   margin: 40px auto;
   padding: 20px;
   justify-items: auto;
-  background-color:#333;
+  background-color: #333;
   border-radius: 10px;
-  display:flex;
+  display: flex;
 }
 .popup h1 {
   color: #f2f2f2;
   font-size: 18px;
   flex: auto;
 }
-.MatchingTimer h2{
+.MatchingTimer h2 {
   color: #f2f2f2;
   font-size: 18px;
-  flex:auto;
+  flex: auto;
 }
 .MatchingTimer {
   margin-left: 120px;
   margin-right: 10px;
 }
-.matchfailed{
+.matchfailed {
   max-width: 600px;
   margin: 40px auto;
   padding: 20px;
@@ -206,12 +206,12 @@ code {
   border-width: 1px;
   border-radius: 2px;
 }
-.messageinput{
+.messageinput {
   display: flex;
   min-width: 680px;
   min-height: 5px;
 }
-.input{
+.input {
   width: 550px;
 }
 .send {
@@ -219,4 +219,59 @@ code {
   margin-left: auto;
 }
 .titleandservices {
+}
+
+/* create new question form */
+.create {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.create label {
+  text-align: left;
+  display: block;
+}
+.create h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 30px;
+}
+.create input,
+.create textarea,
+.create select {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+.create button {
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* base styles for questions */
+.content {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+/* question previews / list */
+.question-preview {
+  padding: 10px 16px;
+  margin: 20px 0;
+  border-bottom: 1px solid #fafafa;
+}
+.question-preview:hover {
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+}
+.question-preview h2 {
+  font-size: 20px;
+  color: #f1356d;
+  margin-bottom: 8px;
 }

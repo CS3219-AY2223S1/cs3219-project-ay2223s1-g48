@@ -6,8 +6,10 @@ const QuestionPage = () => {
   return (
     <div>
       {/* <Navbar /> */}
-      <Link to="/question/create">New Question</Link>
-      <QuestionList />
+      <div className="content">
+        <Link to="/question/create">New Question</Link>
+        <QuestionList />
+      </div>
     </div>
   );
 };
