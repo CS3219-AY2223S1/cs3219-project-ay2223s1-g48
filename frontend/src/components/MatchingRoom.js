@@ -4,17 +4,21 @@ import { io } from "socket.io-client";
 import { renderMatches, useLocation, useNavigate } from "react-router-dom";
 
 const MatchingRoom = () => {
+  const navigate = useNavigate()
+  const didMount = useRef(true)
+  const location = useLocation()
   const [messages, setMessages] = useState("Session started: " + Date().toLocaleString() + "\n")
-  const [question, setQuestion] = useState("dummy question")
+  const [question, setQuestion] = useState(location.state.question)
   const [input, setInput] = useState('')
   const [incoming, setIncoming] = useState('')
   const [counter, setCounter] = useState(1)
   const [socket, setSocket] = useState();
-  const navigate = useNavigate()
-  const didMount = useRef(true)
+  
+  console.log(question)
 
   useEffect(() => {
     const socket = io("http://localhost:8081");
+    
     setSocket(socket);
     socket.on("connect", () => {
       console.log(socket.id);
@@ -36,6 +40,7 @@ const MatchingRoom = () => {
       socket.off("receiveMessage");
     };
   }, []);
+
   useEffect(() => {
     if (didMount.current) {
       didMount.current = false;
@@ -44,6 +49,9 @@ const MatchingRoom = () => {
     }
   }, [incoming])
   const handleReturn = () => {
+    setCounter(counter + 1)
+    socket.emit("sendMessage", { username: location.state.username, input: "Thanks for the seesion! (Left the room)", roomId: location.state.matchedRoomId, counter: counter });
+    setInput('')
     navigate("/matching/" + location.state.username, {
       state: { cookies: location.state.cookies },
     });
@@ -59,7 +67,6 @@ const MatchingRoom = () => {
     setInput('')
   }
 
-  const location = useLocation()
   return (
     <div className="titleandservices">
       <div className="titles">
