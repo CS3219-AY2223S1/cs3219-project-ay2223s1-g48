@@ -2,6 +2,13 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import axios from "axios";
+import { URL_QNS_SVC } from "./matching-service-configs.js";
+import { 
+  STATUS_CODE_QNS_SUCCESSFUL,
+  STATUS_CODE_QNS_DBFAILED,
+  STATUS_CODE_QNS_POSTFAILED 
+} from "./matching-service-constants.js";
 import * as matchORM from "./model/matching-orm.js";
 
 var matchedRoomId = 0;
@@ -40,8 +47,30 @@ io.on("connection", (socket) => {
       // there exists some match in database with same difficulty
       const match = await matchORM.popLatestDifficulty(data.difficulty);
 
-      socket.emit("matchSuccess", matchedRoomId);
-      socket.to(match.socketID).emit("matchSuccess", matchedRoomId);
+      const res = await axios
+      .get(`${URL_QNS_SVC}/random/${data.difficulty}`)
+      .catch((err) => {
+        if (err.response.status === STATUS_CODE_QNS_POSTFAILED) {
+          console.log(err)
+          socket.emit("matchSuccess", { matchedRoomId, question: "Error getting question!" });
+          socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Error getting question!" });
+        } else if (err.response.status === STATUS_CODE_QNS_DBFAILED) {
+          console.log(err)
+          socket.emit("matchSuccess", { matchedRoomId, question: "Error occured in questions database" });
+          socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Error occured in questions database" });
+        } else {
+          console.log(err)
+          socket.emit("matchSuccess", { matchedRoomId, question: "Please leave and rematch" });
+          socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Please leave and rematch" });
+        }
+        return;
+      });
+      if (res && res.status === STATUS_CODE_QNS_SUCCESSFUL) {
+        console.log(res);
+        socket.emit("matchSuccess", { matchedRoomId, question: res.data.data[0].question });
+        socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: res.data.data[0].question });
+      }
+      
       console.log("matched " + match.username + "at difficulty " + match.difficulty + " with " + data.username + "at difficulty " + data.difficulty);
       matchedRoomId++;
     } else {
