@@ -1,22 +1,16 @@
-import React from 'react';
+import React from "react";
 import { Link } from "react-router-dom";
+import Avatar from "react-avatar";
+import { width } from "@mui/system";
+import { useState } from "react";
+import Logo from "../Images/logo.svg";
 
 const Navbar = (props) => {
+  console.log(props.children);
   return (
     <nav className="navbar">
-      <h1>PeerPrep {props.params.username}</h1>
-      <div className="links">
-        <Link
-          to="/login"
-          style={{
-            color: "white",
-            backgroundColor: "#f1356d",
-            borderRadius: "8px",
-          }}
-        >
-          Logout
-        </Link>
-      </div>
+      <img src={Logo} alt="logo" id="logo-nav" />
+      <div className="navbar-nav">{props.children}</div>
     </nav>
   );
 };

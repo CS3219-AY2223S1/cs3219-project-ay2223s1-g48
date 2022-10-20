@@ -118,27 +118,107 @@ h6 {
   text-align: center;
 }
 /* matching service styles */
+:root {
+  --bg:#FCF1E6;
+  --bg-accent: #484a4d;
+  --text-color: #dadce1;
+  --nav-size: 70px;
+  --border-radius: 8px;
+  --boarder: 1px solid #D9D9D9;
+  --speed: 500ms;
+}
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+a .dropdown {
+  color: var(--text-color);
+  text-decoration: none;
+}
 * {
   margin: 0;
   font-family: "Quicksand";
   color: #333;
 }
-.navbar {
-  max-width: 600px;
+#logo-nav {
+  height: calc(var(--nav-size) * 0.7);
+  margin: 0.5vh 0.5vw 0.5vh 5vw;
+}
+.navbar{
+  height: var(--nav-size);
+  background-color: var(--bg);
+  padding: 0 1rem;
+  width: 100vw;
   margin: 0 auto;
-  border-bottom: 1px solid #f2f2f2;
+  border-bottom: var(--border);
+  flex-direction: row;
+  flex-wrap: wrap;
+  display: inline-flex;
 }
-.navbar h1 {
-  color: #f1356d;
+.navbar-nav{
+  
+  margin-right: 4vw;
 }
-.navbar .links {
-  margin-left: auto;
+.nav-item{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  height: 60px;
+  padding: 0%;
 }
-.navbar a {
-  margin-left: 16px;
-  text-decoration: none;
-  padding: 6px;
+.avatar-button {
+  position: absolute;
+  right: 4vw;
+  --button-size: 40px;
+  width: var(--button-size);
+  height: var(--button-size);
+  background-color: #F8D548;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 300ms
 }
+.avatar-button:hover {
+  filter: brightness(1.05)
+}
+.dropdown{
+  position: absolute;
+  top: 80px;
+  transform :translateX(10%);
+  border: var(--boarder);
+  border-radius: var(--border-radius) !important;
+  background-color: #ffffff;
+  padding: 5px;
+}
+.dropdown-item{
+  height: auto;
+  display: flex;
+  align-items: center;
+  border-radius: var(--border-radius); 
+  transition: background var(--speed);
+  margin-right: 20px;
+  margin: 5px;
+  padding: 10px !important;
+  transform :translateX(-3.5%);
+}
+.dropdown-item:hover{
+  background-color: #FCEAA3 !important;
+}
+.right-icon{
+  margin-left: 20px;
+}
+
+.title {
+  margin-left: 5vw;
+}
+.sb-avatar {
+  margin:0.5vh 5vw 0.5vh 0.5vw;
+}
+
 .navbar a:hover {
   color: #f1356d;
 }

@@ -30,7 +30,7 @@ import {
   STATUS_CODE_LOGIN_SUCCESSFUL,
 } from "../constants";
 import { Link } from "react-router-dom";
-import HomePage from "./HomePage";
+
 import { margin } from "@mui/system";
 import styled from "@emotion/styled";
 
@@ -155,7 +155,7 @@ const LoginPage = () => {
           <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
             <StyledTextField
               focusColor="rgba(250, 106, 60, 0.60)"
-              label="Email"
+              label="Username"
               variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -182,7 +182,11 @@ const LoginPage = () => {
               }
             />
           </FormControl>
-
+          <h6>
+            <a href="/find_username_or_password">
+              Forgot your password or username?
+            </a>
+          </h6>
           <Box
             display={"flex"}
             flexDirection={"row"}

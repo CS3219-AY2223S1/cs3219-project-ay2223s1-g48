@@ -1,6 +1,10 @@
 import React from "react";
+import Logo from "../Images/logo.svg";
+
 import Navbar from "./Navbar";
+import NavItem from "./Navitem";
 import MatchingTimer from "./MatchingTimer";
+import Dropdown from "./Dropdown";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import MatchingRoom from "./MatchingRoom";
@@ -37,7 +41,10 @@ const MatchingPage = () => {
   const [roomId, setRoomId] = useState(null);
   const [question, setQuestion] = useState(null);
   const [initialRender, setInitialRender] = useState(false);
+  //const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const params = useParams();
+  console.log(params);
   const location = useLocation();
   const cookies = location.state && location.state.cookies;
   const jwt = cookies && cookies.cookies && cookies.cookies.jwt;
@@ -74,19 +81,25 @@ const MatchingPage = () => {
     };
   }, [setSocket]);
 
-  useEffect (() => {
+  useEffect(() => {
     if (initialRender) {
       navigate("/matchingroom", {
-        state: { username: username, question: question, matchedRoomId: roomId, cookies: cookies },
+        state: {
+          username: username,
+          question: question,
+          matchedRoomId: roomId,
+          cookies: cookies,
+        },
       });
     } else {
       // do nothing
+      console.log("This is just the initial render!");
     }
-  }, [roomId])
+  }, [roomId]);
 
   // Creates matching page for selection and confirmation
   const handleSelection = (selected) => {
-    setSelection('selecting');
+    setSelection("selecting");
     if (selected === "high") {
       setHigh(true);
       setMid(false);
@@ -104,17 +117,18 @@ const MatchingPage = () => {
 
   useEffect(() => {
     if (initialRender) {
-      if(isHigh === true) {
-        setSelection('High');
+      if (isHigh === true) {
+        setSelection("High");
       } else if (isMid === true) {
-        setSelection('Med');
+        setSelection("Med");
       } else if (isLow === true) {
-        setSelection('Low');
+        setSelection("Low");
       }
+      console.log(selection);
     } else {
-      // do nothing
+      console.log("This is just the initial render!");
     }
-  }, [selection])
+  }, [selection]);
 
   const handleConfirmation = () => {
     if (selection !== null) {
@@ -211,7 +225,12 @@ const MatchingPage = () => {
 
   return isLoggedIn ? (
     <div className="MatchingPage">
-      <Navbar params />
+      <Navbar username={params.username}>
+        <NavItem icon={params.username[0]}>
+          <Dropdown />
+        </NavItem>
+      </Navbar>
+      <h1 className="title">Welcome Back! {params.username}</h1>
       {!isConfirm && matchingpage}
       {isConfirm && popup}
       {showMatchFailed && (
@@ -231,7 +250,7 @@ const MatchingPage = () => {
       )}
     </div>
   ) : (
-    <Dialog open={!jwt} onClose={closeDialog}>
+    <Dialog open={!isLoggedIn} onClose={closeDialog}>
       <DialogTitle>Unauthorised</DialogTitle>
       <DialogContent>
         <DialogContentText>

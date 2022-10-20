@@ -26,6 +26,7 @@ import { borderRadius } from "@mui/system";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -116,18 +117,27 @@ function SignupPage() {
           margin={"auto"}
           marginTop={"5%"}
         >
-          <h3>Sign up with your email!</h3>
+          <h3>Sign up with a username and your email!</h3>
           <h6>
             Already have an account? <a href="/login">Login</a>
           </h6>
           <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
             <StyledTextField
               focusColor="rgba(250, 106, 60, 0.60)"
-              label="Email"
+              label="Username"
               sx={{ marginBottom: "1rem" }}
               variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoFocus
+            />
+            <StyledTextField
+              focusColor="rgba(250, 106, 60, 0.60)"
+              label="Email"
+              sx={{ marginBottom: "1rem" }}
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               autoFocus
             />
             <StyledTextField
