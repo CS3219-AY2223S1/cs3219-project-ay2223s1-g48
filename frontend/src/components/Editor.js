@@ -12,8 +12,8 @@ import "codemirror/mode/python/python";
 import "codemirror/mode/clike/clike";
 import "codemirror/keymap/sublime";
 
-const prefix = "3fd842948a66b1399bd01ed143b1b4ea";
-const pass = "c7d4d3529df7ae0f0a74c2b032d51445";
+const prefix = process.env.PREFIX;
+const pass = process.env.PASS;
 
 export default function Editor(props) {
   const [EditorRef, setEditorRef] = useState("");
