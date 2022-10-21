@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 /* Landing Page styles
@@ -23,24 +23,24 @@ code {
   margin: 0;
   background-image: url("./Images/Background.jpg");
 }
-#logo-landing{
+#logo-landing {
   display: block;
-  margin:auto;
+  margin: auto;
   margin-top: 3%;
   width: 50vw;
 }
-#icons{
+#icons {
   width: 46vw;
   margin-left: 25vw;
   margin-top: 10vh;
-  display: block
+  display: block;
 }
 .button-primary {
-  background: #F8D548;
+  background: #f8d548;
   border: 3px solid rgba(248, 213, 72, 0.2);
   border-radius: 70px;
   padding: 20px 50px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 36px;
@@ -50,8 +50,8 @@ code {
   text-align: center;
 }
 .button-primary:hover {
-  background: #FEFBED;
-  border: 3px solid #F8D548;
+  background: #fefbed;
+  border: 3px solid #f8d548;
   border-radius: 70px;
 }
 /* Login Page styles 
@@ -60,7 +60,7 @@ code {
 */
 #logo-login {
   display: block;
-  margin:auto;
+  margin: auto;
   margin-top: 3%;
   width: 30vw;
 }
@@ -75,7 +75,7 @@ code {
   height: 512px;
 }
 h3 {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 40px;
@@ -88,10 +88,10 @@ h6 {
   justify-content: center;
   align-items: center;
   padding: 5px 40px;
-  background: #FA6A3C;
+  background: #fa6a3c;
   border-radius: 15px;
   border: 3px solid rgba(250, 106, 60, 0.25);
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
@@ -100,18 +100,18 @@ h6 {
   margin-top: 3%;
   display: block;
 }
-.button-secondary:hover{
+.button-secondary:hover {
   justify-content: center;
   align-items: center;
   padding: 5px 40px;
   border-radius: 15px;
   background: rgba(250, 106, 60, 0.1);
-  border: 3px solid #FA6A3C;
-  font-family: 'Roboto';
+  border: 3px solid #fa6a3c;
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 600;
   font-size: 30px;
-  color: #FA6A3C;
+  color: #fa6a3c;
   margin: auto;
   margin-top: 3%;
   display: block;
@@ -120,7 +120,7 @@ h6 {
 /* matching service styles */
 * {
   margin: 0;
-  font-family: 'Quicksand';
+  font-family: "Quicksand";
   color: #333;
 }
 .navbar {
@@ -326,7 +326,28 @@ h6 {
 }
 .titleandservices {
 }
-
+.remote-caret {
+  position: absolute;
+  border-left: black;
+  border-left-style: solid;
+  border-left-width: 2px;
+  height: 1em;
+}
+.remote-caret > div {
+  position: relative;
+  top: -1.05em;
+  font-size: 13px;
+  background-color: rgb(250, 129, 0);
+  font-family: serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  user-select: none;
+  color: white;
+  padding-left: 2px;
+  padding-right: 2px;
+  z-index: 3;
+}
 /* create new question form */
 .create {
   max-width: 400px;
