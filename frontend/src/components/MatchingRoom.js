@@ -17,35 +17,45 @@ const MatchingRoom = () => {
   const [counter, setCounter] = useState(1);
   const [socket, setSocket] = useState();
 
-  console.log(question);
-
   useEffect(() => {
     const socket = io("http://localhost:8081");
 
     setSocket(socket);
     socket.on("connect", () => {
-      console.log(socket.id);
+      socket.emit("joinRoom", { roomId: location.state.matchedRoomId });
+      setIncoming("[Connected to the Communication Service Server!]");
+      var chatHistory = document.getElementById("chatbox");
+      chatHistory.scrollTop = chatHistory.scrollHeight;
     });
     socket.on("connect_error", () => {
       setTimeout(() => socket.connect(), 8081);
     });
-    socket.on("receiveMessage", (data) => {
-      if (
-        data.roomId != location.state.matchedRoomId ||
-        data.username == location.state.username
-      ) {
-        // Do nothing
-      } else {
-        setIncoming(
-          "[" + data.counter + "] " + data.username + ": " + data.input
-        );
-        setCounter(data.counter + 1);
-      }
+    socket.on("setUsername", (data) => {
+      socket.username = location.state.username;
+      console.log(socket.username);
     });
+    socket.on("receiveMessage", (data) => {
+      setIncoming("[" + data.counter + "] " + data.username + ": " + data.input);
+      setCounter(data.counter + 1);
+      var chatHistory = document.getElementById("chatbox");
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    });
+    socket.on("userDisconnect", (data) => {
+      setIncoming("[The other user has disconnected unexpectedly!]");
+      var chatHistory = document.getElementById("chatbox");
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    });
+    socket.on("disconnect", (reason) => {
+      setIncoming("[The Communication Service Server has gone down!]");
+      var chatHistory = document.getElementById("chatbox");
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    })
     return () => {
       socket.off("connect");
       socket.off("connect_error");
+      socket.off("setUsername");
       socket.off("receiveMessage");
+      socket.off("userDisconnect");
     };
   }, []);
 
@@ -55,16 +65,12 @@ const MatchingRoom = () => {
     } else {
       setMessages(messages + "\n" + incoming);
     }
-  }, [incoming]);
+  }, [incoming])
+  
   const handleReturn = () => {
     setCounter(counter + 1);
-    socket.emit("sendMessage", {
-      username: location.state.username,
-      input: "Thanks for the seesion! (Left the room)",
-      roomId: location.state.matchedRoomId,
-      counter: counter,
-    });
-    setInput("");
+    socket.emit("sendMessage", { username: location.state.username, input: "Thanks for the session! (Left the room)", roomId: location.state.matchedRoomId, counter: counter });
+    setInput('');
     navigate("/matching/" + location.state.username, {
       state: { cookies: location.state.cookies },
     });
@@ -74,25 +80,11 @@ const MatchingRoom = () => {
     // console.log('value is:', event.target.value)
   };
   const handleSend = () => {
-    setMessages(
-      messages +
-        "\n" +
-        "[" +
-        counter +
-        "] " +
-        location.state.username +
-        ": " +
-        input
-    );
-    setCounter(counter + 1);
-    socket.emit("sendMessage", {
-      username: location.state.username,
-      input: input,
-      roomId: location.state.matchedRoomId,
-      counter: counter,
-    });
-    setInput("");
-  };
+    socket.emit("sendMessage", { username: location.state.username, input: input, roomId: location.state.matchedRoomId, counter: counter });
+    setInput('');
+    const chatHistory = document.getElementById("chatbox");
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
 
   return (
     <div className="titleandservices">
@@ -120,7 +112,9 @@ const MatchingRoom = () => {
             <ul className="question">{question}</ul>
           </div>
           <div className="communicationservice">
-            <ul className="chatbox">{messages}</ul>
+            <ul id="chatbox" className="chatbox">
+              { messages }
+            </ul>
             <div className="messageinput">
               <input
                 className="input"

@@ -42,7 +42,6 @@ const MatchingPage = () => {
   const cookies = location.state && location.state.cookies;
   const jwt = cookies && cookies.cookies && cookies.cookies.jwt;
   let isLoggedIn = jwt;
-  console.log("jwt: ", jwt);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +51,6 @@ const MatchingPage = () => {
       if (!initialRender) {
         setInitialRender(true);
       }
-      console.log(socket.id);
     });
     socket.on("connect_error", () => {
       setTimeout(() => socket.connect(), 8001);
@@ -60,9 +58,6 @@ const MatchingPage = () => {
     socket.on("matchSuccess", (elem1) => {
       // Navigate to Matching Room
       console.log("Match has succeeded");
-      console.log(elem1);
-      console.log(elem1.matchedRoomId);
-      console.log(elem1.question);
       setQuestion(elem1.question);
       setRoomId(elem1.matchedRoomId);
     });
@@ -81,12 +76,11 @@ const MatchingPage = () => {
 
   useEffect (() => {
     if (initialRender) {
-      console.log('Matching')
       navigate("/matchingroom", {
         state: { username: username, question: question, matchedRoomId: roomId, cookies: cookies },
       });
     } else {
-      console.log('This is just the initial render!');
+      // do nothing
     }
   }, [roomId])
 
@@ -111,15 +105,14 @@ const MatchingPage = () => {
   useEffect(() => {
     if (initialRender) {
       if(isHigh === true) {
-        setSelection('High')
+        setSelection('High');
       } else if (isMid === true) {
-        setSelection('Med')
+        setSelection('Med');
       } else if (isLow === true) {
-        setSelection('Low')
+        setSelection('Low');
       }
-      console.log(selection)
     } else {
-      console.log('This is just the initial render!');
+      // do nothing
     }
   }, [selection])
 
