@@ -14,7 +14,7 @@ const NavItem = (props) => {
           {props.content}
         </button>
       ) : (
-        <button className="tab" href={props.link}>
+        <button className="tab" href={props.link} onClick={props.onClick}>
           {props.content}
         </button>
       )}

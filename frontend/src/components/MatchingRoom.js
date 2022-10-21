@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { renderMatches, useLocation, useNavigate } from "react-router-dom";
 import Editor from "./Editor.js";
+import NavItem from "./Navitem";
+import Navbar from "./Navbar";
+import Dropdown from "./Dropdown";
 
 const MatchingRoom = () => {
   const navigate = useNavigate();
@@ -100,20 +103,20 @@ const MatchingRoom = () => {
 
   return (
     <div>
-      <Navbar username={location.state.username}>
-        <NavItem
-          type="button"
-          content={location.state.username[0].toUpperCase()}
-        >
-          <Dropdown />
-        </NavItem>
-        <NavItem
-          type="tab"
-          link={`/matching/${location.state.username}`}
-          content="Home"
-        ></NavItem>
-      </Navbar>
       <div className="titleandservices">
+        <Navbar username={location.state.username}>
+          <NavItem
+            type="button"
+            content={location.state.username[0].toUpperCase()}
+          >
+            <Dropdown />
+          </NavItem>
+          <NavItem
+            type="tab"
+            onClick={() => handleReturn()}
+            content="Home"
+          ></NavItem>
+        </Navbar>
         <div className="titles">
           <h1>
             Welcome {location.state.username}, to matching room{" "}

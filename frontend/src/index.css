@@ -13,6 +13,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
 /* Landing Page styles
 **
 **
@@ -437,57 +438,66 @@ a .dropdown {
 .title {
 }
 /****** matching room ******/
+#editor{
+  width: 45vw;
+}
 .titleandservices {
   background-color: #FCF1E6;
+  width: 100vw;
+  height: 100vh;
 }
 .titleandservices h1 {
-  margin-left: 5vw;
+  margin-left: 3.5vw;
   margin-top: 1.5vh;
 }
+
 .returnbutton {
   margin-left: auto;
+  margin-right: 4vw;
 }
 .services {
   display: flex;
   max-width: 1400px;
   max-height: 700px;
-  margin: 0 auto;
+  margin: 0 !important;
 }
 .collabservice {
-  width: 50%;
+  width: 50vw;
   min-width: 680px;
-  min-height: 700px;
+  margin-left: 5vw;
+  height: 80vh;
 }
 .collab {
-  width: 680px;
-  height: 680px;
+  margin-left: 5vw;
+  margin-right: 4vw;
+  width: 45vw;
+  height: 78vh;
   padding: 20px;
 }
 .topbottom {
-  width: 50%;
-  min-width: 680px;
-  min-height: 700px;
-  padding-left: 20px;
+  width: 45vw !important;
+  padding-left: 5vw;
 }
 .questionservice {
-  width: 680px;
-  height: 340px;
+  width: 45vw;
+  margin: 0;
 }
 .question {
-  width: 680px;
-  height: 320px;
+  width: 40vw;
+  height: 35vh;
   padding: 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  margin-right: 0 !important;
 }
 .communicationservice {
-  width: 680px;
+  width: 40vw;
   height: 340px;
 }
 .chatbox {
-  width: 680px;
-  height: 295px;
+  width: 40vw;
+  height: 35vh;
   padding: 20px;
   border-style: solid;
   border-width: 1px;
@@ -498,14 +508,15 @@ a .dropdown {
 }
 .messageinput {
   display: flex;
-  min-width: 680px;
+  min-width: 40vw;
   min-height: 5px;
 }
 .input {
-  width: 550px;
+  width: 30vw;
 }
 .send {
   width: 80px;
+  margin-right: 0vw;
   margin-left: auto;
 }
 .titleandservices {

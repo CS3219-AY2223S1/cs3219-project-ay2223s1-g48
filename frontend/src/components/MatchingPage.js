@@ -246,6 +246,11 @@ const MatchingPage = () => {
           type="tab"
           link={`/matching/${params.username}`}
           content="Home"
+          onClick={() => {
+            navigate("/matching/" + params.username, {
+              state: { cookies: location.state.cookies },
+            });
+          }}
         ></NavItem>
       </Navbar>
       <h1 className="title">Welcome Back! {params.username}</h1>
