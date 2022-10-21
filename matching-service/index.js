@@ -34,7 +34,6 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   console.log("listening on :8001");
-
   socket.on("match", async function (data) {
     //guard clause, check all keys present
     if (
