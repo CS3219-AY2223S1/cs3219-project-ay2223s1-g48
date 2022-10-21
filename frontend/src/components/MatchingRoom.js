@@ -20,6 +20,9 @@ const MatchingRoom = () => {
     setSocket(socket);
     socket.on("connect", () => {
       socket.emit("joinRoom", { roomId: location.state.matchedRoomId });
+      setIncoming("[Connected to the Communication Service Server!]");
+      var chatHistory = document.getElementById("chatbox");
+      chatHistory.scrollTop = chatHistory.scrollHeight;
     });
     socket.on("connect_error", () => {
       setTimeout(() => socket.connect(), 8081);
