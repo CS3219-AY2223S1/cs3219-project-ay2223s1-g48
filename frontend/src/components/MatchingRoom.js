@@ -35,7 +35,9 @@ const MatchingRoom = () => {
       console.log(socket.username);
     });
     socket.on("receiveMessage", (data) => {
-      setIncoming("[" + data.counter + "] " + data.username + ": " + data.input);
+      setIncoming(
+        "[" + data.counter + "] " + data.username + ": " + data.input
+      );
       setCounter(data.counter + 1);
       var chatHistory = document.getElementById("chatbox");
       chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -49,7 +51,7 @@ const MatchingRoom = () => {
       setIncoming("[The Communication Service Server has gone down!]");
       var chatHistory = document.getElementById("chatbox");
       chatHistory.scrollTop = chatHistory.scrollHeight;
-    })
+    });
     return () => {
       socket.off("connect");
       socket.off("connect_error");
@@ -65,12 +67,17 @@ const MatchingRoom = () => {
     } else {
       setMessages(messages + "\n" + incoming);
     }
-  }, [incoming])
-  
+  }, [incoming]);
+
   const handleReturn = () => {
     setCounter(counter + 1);
-    socket.emit("sendMessage", { username: location.state.username, input: "Thanks for the session! (Left the room)", roomId: location.state.matchedRoomId, counter: counter });
-    setInput('');
+    socket.emit("sendMessage", {
+      username: location.state.username,
+      input: "Thanks for the session! (Left the room)",
+      roomId: location.state.matchedRoomId,
+      counter: counter,
+    });
+    setInput("");
     navigate("/matching/" + location.state.username, {
       state: { cookies: location.state.cookies },
     });
@@ -80,40 +87,46 @@ const MatchingRoom = () => {
     // console.log('value is:', event.target.value)
   };
   const handleSend = () => {
-    socket.emit("sendMessage", { username: location.state.username, input: input, roomId: location.state.matchedRoomId, counter: counter });
-    setInput('');
+    socket.emit("sendMessage", {
+      username: location.state.username,
+      input: input,
+      roomId: location.state.matchedRoomId,
+      counter: counter,
+    });
+    setInput("");
     const chatHistory = document.getElementById("chatbox");
     chatHistory.scrollTop = chatHistory.scrollHeight;
-  }
+  };
 
   return (
-    <div className="titleandservices">
-      <div className="titles">
-        <h1>
-          Welcome {location.state.username}, to matching room{" "}
-          {location.state.matchedRoomId}!
-        </h1>
-        <div className="returnbutton">
-          <button className="returnButton" onClick={() => handleReturn()}>
-            Return
-          </button>
-        </div>
-      </div>
-      <div className="services">
-        <div className="collabservice">
-          <Editor
-            className="collab"
-            matchedRoomId={location.state.matchedRoomId}
-            username={location.state.username}
-          />
-        </div>
-        <div className="topbottom">
-          <div className="questionservice">
-            <ul className="question">{question}</ul>
+    <div>
+      <Navbar username={location.state.username}>
+        <NavItem
+          type="button"
+          content={location.state.username[0].toUpperCase()}
+        >
+          <Dropdown />
+        </NavItem>
+        <NavItem
+          type="tab"
+          link={`/matching/${location.state.username}`}
+          content="Home"
+        ></NavItem>
+      </Navbar>
+      <div className="titleandservices">
+        <div className="titles">
+          <h1>
+            Welcome {location.state.username}, to matching room{" "}
+            {location.state.matchedRoomId}!
+          </h1>
+          <div className="returnbutton">
+            <button className="returnButton" onClick={() => handleReturn()}>
+              Return
+            </button>
           </div>
           <div className="communicationservice">
             <ul id="chatbox" className="chatbox">
-              { messages }
+              {messages}
             </ul>
             <div className="messageinput">
               <input

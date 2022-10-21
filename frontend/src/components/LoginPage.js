@@ -33,7 +33,42 @@ import { Link } from "react-router-dom";
 
 import { margin } from "@mui/system";
 import styled from "@emotion/styled";
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (props) => props !== "focusColor",
+})((p) => ({
+  // input label when focused
+  "& label.Mui-focused": {
+    color: p.focusColor,
+  },
+  "& .MuiFormLabel-root.Mui-error": {
+    color: "#3514DC",
+  },
 
+  // focused color for input with variant='standard'
+  "& .MuiInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='filled'
+  "& .MuiFilledInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='outlined'
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: p.focusColor,
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#3514DC",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.50)",
+    },
+    "& fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.25)",
+      borderRadius: "12px",
+    },
+  },
+}));
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -100,43 +135,6 @@ const LoginPage = () => {
     navigate("/");
   };
 
-  const StyledTextField = styled(TextField, {
-    shouldForwardProp: (props) => props !== "focusColor",
-  })((p) => ({
-    // input label when focused
-    "& label.Mui-focused": {
-      color: p.focusColor,
-    },
-    "& .MuiFormLabel-root.Mui-error": {
-      color: "#3514DC",
-    },
-
-    // focused color for input with variant='standard'
-    "& .MuiInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='filled'
-    "& .MuiFilledInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='outlined'
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: p.focusColor,
-      },
-      "&.Mui-error fieldset": {
-        borderColor: "#3514DC",
-      },
-      "&:hover fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.50)",
-      },
-      "& fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.25)",
-        borderRadius: "12px",
-      },
-    },
-  }));
-
   return (
     <div className="background">
       <img src={Logo} alt="logo" id="logo-login" onClick={backToLandingPage} />
@@ -160,7 +158,6 @@ const LoginPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               sx={{ marginBottom: "1rem" }}
-              autoFocus
               error={error && error.username ? true : false}
               helperText={
                 error && error.username ? "Please enter your username" : ""

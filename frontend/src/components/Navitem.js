@@ -3,15 +3,21 @@ const NavItem = (props) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   return (
     <div className="nav-item">
-      <button
-        href=""
-        className="avatar-button"
-        onClick={() => {
-          setIsDropdownOpen(!isDropdownOpen);
-        }}
-      >
-        {props.icon}
-      </button>
+      {props.type == "button" ? (
+        <button
+          href=""
+          className="avatar-button"
+          onClick={() => {
+            setIsDropdownOpen(!isDropdownOpen);
+          }}
+        >
+          {props.content}
+        </button>
+      ) : (
+        <button className="tab" href={props.link}>
+          {props.content}
+        </button>
+      )}
 
       {isDropdownOpen && props.children}
     </div>

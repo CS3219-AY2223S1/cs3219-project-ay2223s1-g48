@@ -1,5 +1,7 @@
 import React from "react";
-import Logo from "../Images/logo.svg";
+import Easy_1 from "../Images/easy_1.png";
+import Medium_1 from "../Images/medium_1.png";
+import Hard from "../Images/hard_1.png";
 
 import Navbar from "./Navbar";
 import NavItem from "./Navitem";
@@ -99,12 +101,13 @@ const MatchingPage = () => {
 
   // Creates matching page for selection and confirmation
   const handleSelection = (selected) => {
-    setSelection("selecting");
-    if (selected === "high") {
+    console.log(selected);
+    setSelection(selected);
+    if (selected === "hard") {
       setHigh(true);
       setMid(false);
       setLow(false);
-    } else if (selected === "med") {
+    } else if (selected === "medium") {
       setHigh(false);
       setMid(true);
       setLow(false);
@@ -164,45 +167,55 @@ const MatchingPage = () => {
     navigate("/login");
   };
 
+  const SelectionButton = (props) => {
+    console.log(selection == null);
+    return (
+      <div className="selectionbutton">
+        <img src={props.src} className="difficulty-img" />
+        <button
+          className={`difficulty_button_${props.type}`}
+          disabled={props.disabled}
+          onClick={() => handleSelection(props.type)}
+        >
+          {props.type}
+        </button>
+      </div>
+    );
+  };
+
   let matchingpage = null;
   if (showMatchingPage) {
     matchingpage = (
       <div className="content">
         <div className="selection">
-          <h1>Make your selection</h1>
+          <h2>What difficulty level do you feel like taking today?</h2>
           <div className="selectionbuttons">
-            <button
+            <SelectionButton
               disabled={isHigh}
-              className="selectionbutton"
-              onClick={() => handleSelection("high")}
-            >
-              High
-            </button>
-            <button
+              src={Hard}
+              type="hard"
+            ></SelectionButton>
+            <SelectionButton
               disabled={isMid}
-              className="selectionbutton"
-              onClick={() => handleSelection("med")}
-            >
-              Med
-            </button>
-            <button
+              src={Medium_1}
+              type="medium"
+            ></SelectionButton>
+            <SelectionButton
+              src={Easy_1}
               disabled={isLow}
-              className="selectionbutton"
-              onClick={() => handleSelection("low")}
-            >
-              Low
-            </button>
+              type="easy"
+            ></SelectionButton>
           </div>
         </div>
         <div className="confirmation">
-          <h1>Confirm your selection</h1>
           {!isConfirm && (
             <div className="confirmbuttons">
               <button
                 className="confirmbutton"
                 onClick={() => handleConfirmation()}
+                disabled={selection === null}
               >
-                Confirm
+                {"Start Coding >"}
               </button>
             </div>
           )}
@@ -226,9 +239,14 @@ const MatchingPage = () => {
   return isLoggedIn ? (
     <div className="MatchingPage">
       <Navbar username={params.username}>
-        <NavItem icon={params.username[0]}>
+        <NavItem type="button" content={params.username[0].toUpperCase()}>
           <Dropdown />
         </NavItem>
+        <NavItem
+          type="tab"
+          link={`/matching/${params.username}`}
+          content="Home"
+        ></NavItem>
       </Navbar>
       <h1 className="title">Welcome Back! {params.username}</h1>
       {!isConfirm && matchingpage}

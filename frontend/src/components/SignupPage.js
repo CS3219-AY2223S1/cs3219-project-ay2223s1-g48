@@ -24,6 +24,45 @@ import React, { Component } from "react";
 import styled from "@emotion/styled";
 import { borderRadius } from "@mui/system";
 
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (props) => props !== "focusColor",
+})((p) => ({
+  // input label when focused
+  "& label.Mui-focused": {
+    color: p.focusColor,
+  },
+  "& .Mui-error": {
+    color: "#3514DC",
+  },
+  "& .MuiFormLabel-root.Mui-error": {
+    color: "#3514DC",
+  },
+
+  // focused color for input with variant='standard'
+  "& .MuiInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='filled'
+  "& .MuiFilledInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='outlined'
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: p.focusColor,
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#3514DC",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.50)",
+    },
+    "& fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.25)",
+      borderRadius: "12px",
+    },
+  },
+}));
 function SignupPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -65,46 +104,6 @@ function SignupPage() {
     setDialogTitle("Error");
     setDialogMsg(msg);
   };
-
-  const StyledTextField = styled(TextField, {
-    shouldForwardProp: (props) => props !== "focusColor",
-  })((p) => ({
-    // input label when focused
-    "& label.Mui-focused": {
-      color: p.focusColor,
-    },
-    "& .Mui-error": {
-      color: "#3514DC",
-    },
-    "& .MuiFormLabel-root.Mui-error": {
-      color: "#3514DC",
-    },
-
-    // focused color for input with variant='standard'
-    "& .MuiInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='filled'
-    "& .MuiFilledInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='outlined'
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: p.focusColor,
-      },
-      "&.Mui-error fieldset": {
-        borderColor: "#3514DC",
-      },
-      "&:hover fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.50)",
-      },
-      "& fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.25)",
-        borderRadius: "12px",
-      },
-    },
-  }));
 
   return (
     <div className="background">
