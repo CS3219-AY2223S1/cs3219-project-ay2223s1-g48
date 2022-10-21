@@ -4,4 +4,5 @@ user-service/node_modules/
 user-service/.env
 question-service/.env
 question-service/node_modules
+communication-service/node_modules
 matching-service/node_modules/

@@ -34,6 +34,9 @@ const MatchingPage = () => {
   // Create socket.io client
   // const [time, setTime] = React.useState('fetching');
   const [socket, setSocket] = useState(null);
+  const [roomId, setRoomId] = useState(null);
+  const [question, setQuestion] = useState(null);
+  const [initialRender, setInitialRender] = useState(false);
   const params = useParams();
   const location = useLocation();
   const cookies = location.state && location.state.cookies;
@@ -46,6 +49,9 @@ const MatchingPage = () => {
     const socket = io("http://localhost:8001");
     setSocket(socket);
     socket.on("connect", () => {
+      if (!initialRender) {
+        setInitialRender(true);
+      }
       console.log(socket.id);
     });
     socket.on("connect_error", () => {
@@ -54,9 +60,11 @@ const MatchingPage = () => {
     socket.on("matchSuccess", (elem1) => {
       // Navigate to Matching Room
       console.log("Match has succeeded");
-      navigate("/matchingroom", {
-        state: { username: username, matchedRoomId: elem1, cookies: cookies },
-      });
+      console.log(elem1);
+      console.log(elem1.matchedRoomId);
+      console.log(elem1.question);
+      setQuestion(elem1.question);
+      setRoomId(elem1.matchedRoomId);
     });
     socket.on("matchFail", () => {
       console.log("Match has failed");
@@ -71,9 +79,20 @@ const MatchingPage = () => {
     };
   }, [setSocket]);
 
+  useEffect (() => {
+    if (initialRender) {
+      console.log('Matching')
+      navigate("/matchingroom", {
+        state: { username: username, question: question, matchedRoomId: roomId, cookies: cookies },
+      });
+    } else {
+      console.log('This is just the initial render!');
+    }
+  }, [roomId])
+
   // Creates matching page for selection and confirmation
   const handleSelection = (selected) => {
-    setSelection(selected);
+    setSelection('selecting');
     if (selected === "high") {
       setHigh(true);
       setMid(false);
@@ -88,6 +107,21 @@ const MatchingPage = () => {
       setLow(true);
     }
   };
+
+  useEffect(() => {
+    if (initialRender) {
+      if(isHigh === true) {
+        setSelection('High')
+      } else if (isMid === true) {
+        setSelection('Med')
+      } else if (isLow === true) {
+        setSelection('Low')
+      }
+      console.log(selection)
+    } else {
+      console.log('This is just the initial render!');
+    }
+  }, [selection])
 
   const handleConfirmation = () => {
     if (selection !== null) {

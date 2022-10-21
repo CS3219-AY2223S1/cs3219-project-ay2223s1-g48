@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,7 +13,110 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+/* Landing Page styles
+**
+**
+*/
+.background {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-image: url("./Images/Background.jpg");
+}
+#logo-landing{
+  display: block;
+  margin:auto;
+  margin-top: 3%;
+  width: 50vw;
+}
+#icons{
+  width: 46vw;
+  margin-left: 25vw;
+  margin-top: 10vh;
+  display: block
+}
+.button-primary {
+  background: #F8D548;
+  border: 3px solid rgba(248, 213, 72, 0.2);
+  border-radius: 70px;
+  padding: 20px 50px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  margin: auto;
+  margin-top: 12vh;
+  display: block;
+  text-align: center;
+}
+.button-primary:hover {
+  background: #FEFBED;
+  border: 3px solid #F8D548;
+  border-radius: 70px;
+}
+/* Login Page styles 
+**
+**
+*/
+#logo-login {
+  display: block;
+  margin:auto;
+  margin-top: 3%;
+  width: 30vw;
+}
+#pop-up-login {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(250, 106, 60, 0.25);
+  border-radius: 30px;
+  margin: auto;
+  margin-top: 3%;
+  display: flex;
+  width: 944px;
+  height: 512px;
+}
+h3 {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 40px;
+  text-align: center;
+}
+h6 {
+  text-align: center;
+}
+.button-secondary {
+  justify-content: center;
+  align-items: center;
+  padding: 5px 40px;
+  background: #FA6A3C;
+  border-radius: 15px;
+  border: 3px solid rgba(250, 106, 60, 0.25);
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  color: white;
+  margin: auto;
+  margin-top: 3%;
+  display: block;
+}
+.button-secondary:hover{
+  justify-content: center;
+  align-items: center;
+  padding: 5px 40px;
+  border-radius: 15px;
+  background: rgba(250, 106, 60, 0.1);
+  border: 3px solid #FA6A3C;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  color: #FA6A3C;
+  margin: auto;
+  margin-top: 3%;
+  display: block;
+  text-align: center;
+}
 /* matching service styles */
 * {
   margin: 0;
@@ -205,6 +308,9 @@ code {
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  white-space: pre-wrap;
+  overflow: auto;
+  overflow-wrap: break-word;
 }
 .messageinput {
   display: flex;
