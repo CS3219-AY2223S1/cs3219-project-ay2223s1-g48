@@ -1,3 +1,4 @@
+import Logo from "../Images/logo.svg";
 import {
   Box,
   Button,
@@ -8,13 +9,20 @@ import {
   DialogTitle,
   TextField,
   Typography,
+  FormControl,
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { URL_USER_SVC } from "../configs";
-import { STATUS_CODE_CONFLICT, STATUS_CODE_CREATED } from "../constants";
+import {
+  STATUS_CODE_BAD_REQUEST,
+  STATUS_CODE_CONFLICT,
+  STATUS_CODE_CREATED,
+} from "../constants";
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
+import styled from "@emotion/styled";
+import { borderRadius } from "@mui/system";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
@@ -23,14 +31,16 @@ function SignupPage() {
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMsg, setDialogMsg] = useState("");
   const [isSignupSuccess, setIsSignupSuccess] = useState(false);
+  const [doesUserExist, setDoesUserExist] = useState(false);
 
   const handleSignup = async () => {
     setIsSignupSuccess(false);
     const res = await axios
       .post(URL_USER_SVC, { username, password })
       .catch((err) => {
-        if (err.response.status === STATUS_CODE_CONFLICT) {
-          setErrorDialog("This username already exists");
+        if (err.response.status === STATUS_CODE_BAD_REQUEST) {
+          setDoesUserExist(true);
+          setErrorDialog("This username already exists. Please login instead");
         } else {
           setErrorDialog("Please try again later");
         }
@@ -55,49 +65,110 @@ function SignupPage() {
     setDialogMsg(msg);
   };
 
-  return (
-    <Box display={"flex"} flexDirection={"column"} width={"30%"}>
-      <Typography variant={"h3"} marginBottom={"2rem"}>
-        Sign Up
-      </Typography>
-      <TextField
-        label="Username"
-        variant="standard"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        sx={{ marginBottom: "1rem" }}
-        autoFocus
-      />
-      <TextField
-        label="Password"
-        variant="standard"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ marginBottom: "2rem" }}
-      />
-      <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
-        <Button variant={"outlined"} onClick={handleSignup}>
-          Sign up
-        </Button>
-      </Box>
+  const StyledTextField = styled(TextField, {
+    shouldForwardProp: (props) => props !== "focusColor",
+  })((p) => ({
+    // input label when focused
+    "& label.Mui-focused": {
+      color: p.focusColor,
+    },
+    "& .Mui-error": {
+      color: "#3514DC",
+    },
+    "& .MuiFormLabel-root.Mui-error": {
+      color: "#3514DC",
+    },
 
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{dialogMsg}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {isSignupSuccess ? (
-            <Button component={Link} to="/login">
-              Log in
-            </Button>
-          ) : (
-            <Button onClick={closeDialog}>Done</Button>
-          )}
-        </DialogActions>
-      </Dialog>
-    </Box>
+    // focused color for input with variant='standard'
+    "& .MuiInput-underline:after": {
+      borderBottomColor: p.focusColor,
+    },
+    // focused color for input with variant='filled'
+    "& .MuiFilledInput-underline:after": {
+      borderBottomColor: p.focusColor,
+    },
+    // focused color for input with variant='outlined'
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: p.focusColor,
+      },
+      "&.Mui-error fieldset": {
+        borderColor: "#3514DC",
+      },
+      "&:hover fieldset": {
+        borderColor: "rgba(250, 106, 60, 0.50)",
+      },
+      "& fieldset": {
+        borderColor: "rgba(250, 106, 60, 0.25)",
+        borderRadius: "12px",
+      },
+    },
+  }));
+
+  return (
+    <div className="background">
+      <img src={Logo} alt="logo" id="logo-login" />
+      <div id="pop-up-login">
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          width={"80%"}
+          margin={"auto"}
+          marginTop={"5%"}
+        >
+          <h3>Sign up with your email!</h3>
+          <h6>
+            Already have an account? <a href="/login">Login</a>
+          </h6>
+          <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
+            <StyledTextField
+              focusColor="rgba(250, 106, 60, 0.60)"
+              label="Email"
+              sx={{ marginBottom: "1rem" }}
+              variant="outlined"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoFocus
+            />
+            <StyledTextField
+              focusColor="rgba(250, 106, 60, 0.60)"
+              label="Password"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              sx={{ marginBottom: "2rem" }}
+            />
+          </FormControl>
+
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"flex-end"}
+          >
+            <button className="button-secondary" onClick={handleSignup}>
+              Sign up
+            </button>
+          </Box>
+
+          <Dialog open={isDialogOpen} onClose={closeDialog}>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{dialogMsg}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              {isSignupSuccess || doesUserExist ? (
+                <Button component={Link} to="/login">
+                  Log in
+                </Button>
+              ) : (
+                <Button onClick={closeDialog}>Done</Button>
+              )}
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </div>
+    </div>
   );
 }
 
