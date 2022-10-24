@@ -243,7 +243,7 @@ const MatchingPage = () => {
     <div className="MatchingPage">
       <Navbar username={params.username}>
         <NavItem type="button" content={params.username[0].toUpperCase()}>
-          <Dropdown />
+          <Dropdown username={params.username} />
         </NavItem>
         <NavItem
           type="tab"
