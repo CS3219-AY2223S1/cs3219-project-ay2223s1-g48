@@ -184,6 +184,7 @@ a .dropdown {
   height: var(--button-size);
   background-color: #F8D548;
   border-radius: 50%;
+  border-color: transparent;
   padding: 5px;
   display: flex;
   align-items: center;
@@ -296,6 +297,7 @@ a .dropdown {
   max-width: 600px;
   margin: 0 auto;
   justify-content: space-around;
+  flex-direction: row-reverse;
 }
 .difficulty-img{
   width: 10vw;
@@ -315,6 +317,10 @@ a .dropdown {
   align-items: flex;
   justify-content: space-around;
   display: flex;
+}
+.selectionbutton:hover {
+  border: 3px solid #D9D9D9;
+  margin: 28px
 }
 .difficulty_button_easy{
   background-color: #AEDBCE;
@@ -450,10 +456,15 @@ a .dropdown {
   margin-left: 3.5vw;
   margin-top: 1.5vh;
 }
-
-.returnbutton {
+.returnbutton{
   margin-left: auto;
   margin-right: 4vw;
+}
+.returnButton {
+  border-radius: 12px;
+  background-color: #f8d548;
+  border-color: #FCEAA3;
+  padding: 2px 10px;
 }
 .services {
   display: flex;
@@ -463,9 +474,8 @@ a .dropdown {
 }
 .collabservice {
   width: 50vw;
-  min-width: 680px;
   margin-left: 5vw;
-  height: 80vh;
+  height: 75vh;
 }
 .collab {
   margin-left: 5vw;
@@ -476,48 +486,75 @@ a .dropdown {
 }
 .topbottom {
   width: 45vw !important;
-  padding-left: 5vw;
+  padding-left: 0vw;
+  margin-right: 0vw;
 }
 .questionservice {
-  width: 45vw;
-  margin: 0;
+  width: 41vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.questionservice ul {
+  margin-right: 4px ;
+  margin-inline-end: 0px;
+  margin-block-start: 0em;
 }
 .question {
   width: 40vw;
-  height: 35vh;
+  height: 32.5vh;
   padding: 20px;
   border-style: solid;
-  border-width: 1px;
-  border-radius: 2px;
-  margin-right: 0 !important;
+  border-width: 0px;
+  border-radius: 5px;
+  margin-right: 4vw;
 }
 .communicationservice {
-  width: 40vw;
-  height: 340px;
+  width: 41vw;
+  height: 40vh;
+  background-color: #fafafa;
+  border-radius: 10px;
 }
 .chatbox {
-  width: 40vw;
-  height: 35vh;
+  position: relative;
+  top: 1vw;
+  width: 39vw;
+  height: 31.5vh;
   padding: 20px;
   border-style: solid;
-  border-width: 1px;
-  border-radius: 2px;
+  border-width: 1.3px;
+  border-radius: 12px;
+  border-color: rgba(87, 147, 201, 0.80);
   white-space: pre-wrap;
   overflow: auto;
   overflow-wrap: break-word;
+  margin-left: 1vw;
+  margin-top: 0vh;
 }
 .messageinput {
   display: flex;
   min-width: 40vw;
   min-height: 5px;
+  margin-left: 1vw;
+  margin-top: 1.5vw;
 }
 .input {
   width: 30vw;
+  border-radius: 50px;
+  border: solid;
+  border-color: #B3DAFE;
+  margin-left: 1.5vw;
+  padding-inline-start: 10px;
 }
 .send {
-  width: 80px;
-  margin-right: 0vw;
+  margin-right: 1.5vw;
   margin-left: auto;
+  background-color: #5793C9;
+  color: #ffffff;
+  border-radius: 15px;
+  border-color: #B3DAFE;
+  padding: 2px 15px;
+  border-width: 1px;
 }
 .titleandservices {
 }

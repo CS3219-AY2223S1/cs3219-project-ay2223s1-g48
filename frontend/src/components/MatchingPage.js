@@ -170,7 +170,10 @@ const MatchingPage = () => {
   const SelectionButton = (props) => {
     console.log(selection == null);
     return (
-      <div className="selectionbutton">
+      <div
+        className="selectionbutton"
+        onClick={() => handleSelection(props.type)}
+      >
         <img src={props.src} className="difficulty-img" />
         <button
           className={`difficulty_button_${props.type}`}
