@@ -4,29 +4,31 @@ import {
   updateUser,
   checkUserAccount,
   deleteUser,
-} from "./repository.js";
-import UserModel from "./user-model.js";
+  checkEmail,
+} from './repository.js';
+import UserModel from './user-model.js';
 
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 //need to separate orm functions from repository to decouple business logic from persistence
-export async function ormCreateUser(username, password) {
+export async function ormCreateUser(username, email, password) {
   try {
-    const exists = await checkUserName(username);
-    if (!exists) {
+    const userNameExists = await checkUserName(username);
+    const emailExists = await checkEmail(email);
+    if (!userNameExists || !emailExists) {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
       console.log(salt, password);
-      const newUser = await createUser({ username, password });
+      const newUser = await createUser({ username, email, password });
       newUser.save();
       return true;
     } else {
-      const err = new Error("ERROR: UserName already exists");
+      const err = new Error('ERROR: UserName and/or Email already exists');
       console.log(err.message);
       throw err;
     }
   } catch (err) {
-    console.log("ERROR: Could not create new user");
+    console.log('ERROR: Could not create new user');
     return { err };
   }
 }
@@ -40,13 +42,13 @@ export async function ormPatchUser(username, password, newPassword) {
       return true;
     } else {
       const err = new Error(
-        "ERROR: Account does not exist/username and/or password is incorrect"
+        'ERROR: Account does not exist/username and/or password is incorrect'
       );
       console.log(err.message);
       throw err;
     }
   } catch (err) {
-    console.log("ERROR: could not update password");
+    console.log('ERROR: could not update password');
     return { err };
   }
 }
@@ -59,13 +61,13 @@ export async function ormDeleteUser(username, password) {
       return true;
     } else {
       const err = new Error(
-        "ERROR: Account does not exist/username and/or password is incorrect"
+        'ERROR: Account does not exist/username and/or password is incorrect'
       );
       console.log(err.message);
       throw err;
     }
   } catch (err) {
-    console.log("ERROR: could not delete User");
+    console.log('ERROR: could not delete User');
     return { err };
   }
 }

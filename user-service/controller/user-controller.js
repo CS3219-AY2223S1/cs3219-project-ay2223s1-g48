@@ -3,19 +3,18 @@ import {
   ormPatchUser as _patchUser,
   ormDeleteUser as _deleteUser,
   validateUser,
-} from "../model/user-orm.js";
-import { checkUserName } from "../model/repository.js";
+} from '../model/user-orm.js';
 
 export async function createUser(req, res) {
   try {
-    const { username, password } = req.body;
-    if (username && password) {
-      const resp = await _createUser(username, password);
+    const { username, email, password } = req.body;
+    if (username && password && email) {
+      const resp = await _createUser(username, email, password);
       console.log(resp);
       if (resp.err) {
         return res
           .status(400)
-          .json({ message: "Could not create a new user!" });
+          .json({ message: 'Could not create a new user!' });
       } else {
         console.log(`Created new user ${username} successfully!`);
         return res
@@ -25,12 +24,12 @@ export async function createUser(req, res) {
     } else {
       return res
         .status(400)
-        .json({ message: "Username and/or Password are missing!" });
+        .json({ message: 'Username, Email and/or Password are missing!' });
     }
   } catch (err) {
     return res
       .status(500)
-      .json({ message: "Database failure when creating new user!" });
+      .json({ message: 'Database failure when creating new user!' });
   }
 }
 
@@ -43,13 +42,13 @@ export async function logUserIn(req, res) {
   });
   console.log(token);
   if (!token) {
-    res.status(401).send("Wrong username or password");
+    res.status(401).send('Wrong username or password');
     return;
   }
   console.log(username, password);
   res
     .status(200)
-    .header("x-jwt", token)
+    .header('x-jwt', token)
     .send({ message: `User ${username} successfully logged in`, jwt: token });
 }
 
@@ -60,22 +59,22 @@ export async function patchUser(req, res) {
       const resp = await _patchUser(username, password, newPassword);
       console.log(resp);
       if (resp.err) {
-        return res.status(400).json({ message: "Could not change password!" });
+        return res.status(400).json({ message: 'Could not change password!' });
       } else {
-        console.log("Password changed successfully!");
+        console.log('Password changed successfully!');
         return res
           .status(200)
-          .json({ message: "Password changed successfully!" });
+          .json({ message: 'Password changed successfully!' });
       }
     } else {
       return res
         .status(400)
-        .json({ message: "Username and/or Password are missing!" });
+        .json({ message: 'Username and/or Password are missing!' });
     }
   } catch (err) {
     return res
       .status(500)
-      .json({ message: "Database failure when updating password!" });
+      .json({ message: 'Database failure when updating password!' });
   }
 }
 
@@ -86,22 +85,22 @@ export async function deleteUser(req, res) {
       const resp = await _deleteUser(username, password);
       console.log(resp);
       if (resp.err) {
-        return res.status(400).json({ message: "Could not delete account" });
+        return res.status(400).json({ message: 'Could not delete account' });
       } else {
-        console.log("Account deleted successfully!");
+        console.log('Account deleted successfully!');
         return res
           .status(200)
-          .json({ message: "Account deleted successfully!" });
+          .json({ message: 'Account deleted successfully!' });
       }
     } else {
       return res
         .status(400)
-        .json({ message: "Username and/or Password are missing" });
+        .json({ message: 'Username and/or Password are missing' });
     }
   } catch (err) {
     return res
       .status(500)
-      .json({ message: "Database failure when deleting account!" });
+      .json({ message: 'Database failure when deleting account!' });
   }
 }
 
