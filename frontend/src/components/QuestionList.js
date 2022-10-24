@@ -25,21 +25,6 @@ const QuestionList = () => {
     return () => abortCont.abort();
   }, []);
 
-  const handleDelete = async (id) => {
-    const newQuestions = questions.filter((question) => question._id !== id);
-    axios
-      .delete(URL_QUESTION_SVC + id)
-      .then((res) => {
-        if (res.status === 200) {
-          alert('Question deleted!');
-          setQuestions(newQuestions);
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-
   if (!questions) return null;
 
   return (
@@ -49,9 +34,6 @@ const QuestionList = () => {
           <Link to={`/question/update/${question._id}`}>
             <h2>{question.difficulty}</h2>
             <p>{question.question}</p>
-            <button onClick={() => handleDelete(question._id)}>
-              delete question
-            </button>
           </Link>
         </div>
       ))}

@@ -26,15 +26,29 @@ const QuestionUpdate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const question = { difficulty, questionBody };
-    await axios.patch(URL_QUESTION_SVC + id, question).then((res) => {
+    const question = { difficulty: difficulty, question: questionBody };
+    await axios.patch(URL_QUESTION_SVC + '/' + id, question).then((res) => {
       if (res.status === 200) {
         alert('question updated!');
+        navigate('/question');
       } else {
         console.log(res.data.message);
       }
-      navigate('/');
     });
+  };
+
+  const handleDelete = async (id) => {
+    axios
+      .delete(URL_QUESTION_SVC + '/' + id)
+      .then((res) => {
+        if (res.status === 200) {
+          alert('Question deleted!');
+          navigate('/question');
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
@@ -68,6 +82,7 @@ const QuestionUpdate = () => {
 
         <button>Update Question</button>
       </form>
+      <button onClick={() => handleDelete(id)}>delete question</button>
     </div>
   );
 };
