@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 var Schema = mongoose.Schema;
 let UserModelSchema = new Schema({
   username: {
@@ -8,7 +8,7 @@ let UserModelSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   password: {
@@ -17,4 +17,4 @@ let UserModelSchema = new Schema({
   },
 });
 
-export default mongoose.model('UserModel', UserModelSchema);
+export default mongoose.model("UserModel", UserModelSchema);

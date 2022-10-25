@@ -1,5 +1,6 @@
 import { CSSTransition } from "react-transition-group";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { URL_USER_SVC } from "../configs";
 import {
   Box,
@@ -30,6 +31,11 @@ const Dropdown = (props) => {
   const [dialogMsg, setDialogMsg] = useState("");
   const [action, setAction] = useState(null);
   const [isErr, setIsErr] = useState(false);
+  const [isDeleteSuccessful, setIsDeleteSuccssful] = useState(false);
+  const [isChangePasswordSuccessful, setIsChangePasswordSuccessful] =
+    useState(false);
+
+  const navigate = useNavigate();
 
   const DropdownItem = (props) => {
     return (
@@ -68,8 +74,10 @@ const Dropdown = (props) => {
   };
   const handleDeleteAccount = async () => {
     const username = props.username;
+    const body = { username, password };
+    console.log("from frontend deleting account: ", body);
     const res = await axios
-      .delete(URL_USER_SVC, { username, password })
+      .delete(URL_USER_SVC, { data: { username, password } })
       .catch((err) => {
         console.log(err.response.status);
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
@@ -80,6 +88,11 @@ const Dropdown = (props) => {
           );
         }
       });
+    if (res && res.status === 200) {
+      setIsDeleteSuccssful(true);
+      setDialogTitle("Account succesfully deleted!");
+      setDialogMsg("");
+    }
   };
   const handleChangePassword = async () => {
     const username = props.username;
@@ -99,10 +112,21 @@ const Dropdown = (props) => {
           );
         }
       });
+    if (res && res.status === 200) {
+      setIsChangePasswordSuccessful(true);
+      setDialogMsg("");
+      setDialogTitle("Password Changed Successfully!");
+    }
   };
   const closeDialog = () => {
     setIsDialogOpen(false);
     setIsErr(false);
+
+    if (isDeleteSuccessful) {
+      navigate("/");
+    }
+
+    setIsDeleteSuccssful(false);
   };
 
   return isDialogOpen ? (
@@ -111,7 +135,7 @@ const Dropdown = (props) => {
       <DialogContent>
         <DialogContentText>{dialogMsg}</DialogContentText>
 
-        {!isErr && (
+        {!isErr && !isDeleteSuccessful && !isChangePasswordSuccessful && (
           <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
             <TextField
               onChange={(e) => setPassword(e.target.value)}
@@ -133,7 +157,7 @@ const Dropdown = (props) => {
         )}
       </DialogContent>
       <DialogActions>
-        {!isErr && (
+        {!isErr && !isDeleteSuccessful && !isChangePasswordSuccessful && (
           <Button
             onClick={() => {
               action === "Delete Account"
@@ -145,7 +169,13 @@ const Dropdown = (props) => {
           </Button>
         )}
 
-        <Button onClick={closeDialog}>{isErr ? "Ok" : "Cancel"}</Button>
+        <Button onClick={closeDialog}>
+          {isErr || isChangePasswordSuccessful
+            ? "Ok"
+            : isDeleteSuccessful
+            ? "Log Out"
+            : "Cancel"}
+        </Button>
       </DialogActions>
     </Dialog>
   ) : (

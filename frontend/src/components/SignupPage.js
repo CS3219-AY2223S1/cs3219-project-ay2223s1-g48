@@ -76,7 +76,7 @@ function SignupPage() {
   const handleSignup = async () => {
     setIsSignupSuccess(false);
     const res = await axios
-      .post(URL_USER_SVC, { username, password })
+      .post(URL_USER_SVC, { username, email, password })
       .catch((err) => {
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
           setDoesUserExist(true);
