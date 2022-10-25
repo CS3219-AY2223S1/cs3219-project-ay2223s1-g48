@@ -1,5 +1,6 @@
 import UserModel from './user-model.js';
 import 'dotenv/config';
+import bcrypt from 'bcrypt';
 
 //Set up mongoose connection
 import mongoose from 'mongoose';
@@ -27,10 +28,12 @@ export async function checkEmail(params) {
   return UserModel.find({ email: params });
 }
 
-export async function updateUser(username, password, newPassword) {
+export async function updateUser(username, newPassword) {
+  let salt = await bcrypt.genSalt(10);
+  let encryptedPassword = await bcrypt.hash(newPassword, salt)
   let user = await UserModel.findOneAndUpdate(
     { username: username },
-    { password: newPassword },
+    { password: encryptedPassword },
     { returnOriginal: false }
   );
   console.log(user);
@@ -38,9 +41,18 @@ export async function updateUser(username, password, newPassword) {
 }
 
 export async function checkUserAccount(username, password) {
-  return UserModel.exists({ username: username, password: password });
+  let account = await checkUserName(username);
+  if(account) {
+    let passwordMatch = await bcrypt.compare(
+      password,
+      account[0].password
+    )
+    return passwordMatch;
+  } else {
+    return false;
+  }
 }
 
-export async function deleteUser(username, password) {
-  await UserModel.findOneAndDelete({ username: username, password: password });
+export async function deleteUser(username) {
+  await UserModel.findOneAndDelete({ username: username});
 }

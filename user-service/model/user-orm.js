@@ -6,7 +6,6 @@ import {
   deleteUser,
   checkEmail,
 } from './repository.js';
-import UserModel from './user-model.js';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -15,7 +14,9 @@ export async function ormCreateUser(username, email, password) {
   try {
     const userNameExists = await checkUserName(username);
     const emailExists = await checkEmail(email);
-    if (!userNameExists || !emailExists) {
+    console.log(userNameExists);
+    console.log(emailExists)
+    if (userNameExists.length == 0 || emailExists.length == 0) {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
       console.log(salt, password);
@@ -37,7 +38,7 @@ export async function ormPatchUser(username, password, newPassword) {
   try {
     const match = await checkUserAccount(username, password);
     if (match) {
-      const updatedUser = await updateUser(username, password, newPassword);
+      const updatedUser = await updateUser(username, newPassword);
       updatedUser.save();
       return true;
     } else {
@@ -57,7 +58,7 @@ export async function ormDeleteUser(username, password) {
   try {
     const match = await checkUserAccount(username, password);
     if (match) {
-      await deleteUser(username, password);
+      await deleteUser(username);
       return true;
     } else {
       const err = new Error(
@@ -72,10 +73,13 @@ export async function ormDeleteUser(username, password) {
   }
 }
 export async function validateUser(params) {
-  const collection = await UserModel.find({ username: params.username });
+  const collection = await checkUserName(params);
   if (collection.length > 1) {
-    //TODO: throw error about duplicate usernames in database
-    return false;
+    const err = new Error(
+      'ERROR: Multiple identical username in database'
+    )
+    console.log(err.message)
+    throw err;
   }
 
   if (collection.length < 1) {
