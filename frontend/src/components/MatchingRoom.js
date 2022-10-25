@@ -124,23 +124,37 @@ const MatchingRoom = () => {
           </h1>
           <div className="returnbutton">
             <button className="returnButton" onClick={() => handleReturn()}>
-              Leave
+              Return
             </button>
           </div>
-          <div className="communicationservice">
-            <ul id="chatbox" className="chatbox">
-              {messages}
-            </ul>
-            <div className="messageinput">
-              <input
-                className="input"
-                type="text"
-                onChange={handleChange}
-                value={input}
-              />
-              <button className="send" onClick={() => handleSend()}>
-                Send
-              </button>
+        </div>
+        <div className="services">
+          <div className="collabservice">
+            <Editor
+              className="collab"
+              matchedRoomId={location.state.matchedRoomId}
+              username={location.state.username}
+            />
+          </div>
+          <div className="topbottom">
+            <div className="questionservice">
+              <ul className="question">{question}</ul>
+            </div>
+            <div className="communicationservice">
+              <ul id="chatbox" className="chatbox">
+                {messages}
+              </ul>
+              <div className="messageinput">
+                <input
+                  className="input"
+                  type="text"
+                  onChange={handleChange}
+                  value={input}
+                />
+                <button className="send" onClick={() => handleSend()}>
+                  Send
+                </button>
+              </div>
             </div>
           </div>
         </div>
