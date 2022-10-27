@@ -30,7 +30,7 @@ export async function checkEmail(params) {
 
 export async function updateUser(username, newPassword) {
   let salt = await bcrypt.genSalt(10);
-  let encryptedPassword = await bcrypt.hash(newPassword, salt)
+  let encryptedPassword = await bcrypt.hash(newPassword, salt);
   let user = await UserModel.findOneAndUpdate(
     { username: username },
     { password: encryptedPassword },
@@ -42,11 +42,8 @@ export async function updateUser(username, newPassword) {
 
 export async function checkUserAccount(username, password) {
   let account = await checkUserName(username);
-  if(account) {
-    let passwordMatch = await bcrypt.compare(
-      password,
-      account[0].password
-    )
+  if (account) {
+    let passwordMatch = await bcrypt.compare(password, account[0].password);
     return passwordMatch;
   } else {
     return false;
@@ -54,5 +51,5 @@ export async function checkUserAccount(username, password) {
 }
 
 export async function deleteUser(username) {
-  await UserModel.findOneAndDelete({ username: username});
+  await UserModel.findOneAndDelete({ username: username });
 }

@@ -6,16 +6,14 @@ import {
   deleteUser,
   checkEmail,
 } from './repository.js';
-
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
 //need to separate orm functions from repository to decouple business logic from persistence
 export async function ormCreateUser(username, email, password) {
   try {
     const userNameExists = await checkUserName(username);
     const emailExists = await checkEmail(email);
-    console.log(userNameExists);
-    console.log(emailExists)
     if (userNameExists.length == 0 || emailExists.length == 0) {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
@@ -75,10 +73,8 @@ export async function ormDeleteUser(username, password) {
 export async function validateUser(params) {
   const collection = await checkUserName(params);
   if (collection.length > 1) {
-    const err = new Error(
-      'ERROR: Multiple identical username in database'
-    )
-    console.log(err.message)
+    const err = new Error('ERROR: Multiple identical username in database');
+    console.log(err.message);
     throw err;
   }
 
