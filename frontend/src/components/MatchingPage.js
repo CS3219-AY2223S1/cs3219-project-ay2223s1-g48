@@ -1,6 +1,12 @@
 import React from "react";
+import Easy_1 from "../Images/easy_1.png";
+import Medium_1 from "../Images/medium_1.png";
+import Hard from "../Images/hard_1.png";
+
 import Navbar from "./Navbar";
+import NavItem from "./Navitem";
 import MatchingTimer from "./MatchingTimer";
+import Dropdown from "./Dropdown";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import MatchingRoom from "./MatchingRoom";
@@ -37,7 +43,10 @@ const MatchingPage = () => {
   const [roomId, setRoomId] = useState(null);
   const [question, setQuestion] = useState(null);
   const [initialRender, setInitialRender] = useState(false);
+  //const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const params = useParams();
+  console.log(params);
   const location = useLocation();
   const cookies = location.state && location.state.cookies;
   const jwt = cookies && cookies.cookies && cookies.cookies.jwt;
@@ -74,24 +83,31 @@ const MatchingPage = () => {
     };
   }, [setSocket]);
 
-  useEffect (() => {
+  useEffect(() => {
     if (initialRender) {
       navigate("/matchingroom", {
-        state: { username: username, question: question, matchedRoomId: roomId, cookies: cookies },
+        state: {
+          username: username,
+          question: question,
+          matchedRoomId: roomId,
+          cookies: cookies,
+        },
       });
     } else {
       // do nothing
+      console.log("This is just the initial render!");
     }
-  }, [roomId])
+  }, [roomId]);
 
   // Creates matching page for selection and confirmation
   const handleSelection = (selected) => {
-    setSelection('selecting');
-    if (selected === "high") {
+    console.log(selected);
+    setSelection(selected);
+    if (selected === "hard") {
       setHigh(true);
       setMid(false);
       setLow(false);
-    } else if (selected === "med") {
+    } else if (selected === "medium") {
       setHigh(false);
       setMid(true);
       setLow(false);
@@ -104,17 +120,18 @@ const MatchingPage = () => {
 
   useEffect(() => {
     if (initialRender) {
-      if(isHigh === true) {
-        setSelection('High');
+      if (isHigh === true) {
+        setSelection("High");
       } else if (isMid === true) {
-        setSelection('Med');
+        setSelection("Med");
       } else if (isLow === true) {
-        setSelection('Low');
+        setSelection("Low");
       }
+      console.log(selection);
     } else {
-      // do nothing
+      console.log("This is just the initial render!");
     }
-  }, [selection])
+  }, [selection]);
 
   const handleConfirmation = () => {
     if (selection !== null) {
@@ -150,45 +167,58 @@ const MatchingPage = () => {
     navigate("/login");
   };
 
+  const SelectionButton = (props) => {
+    console.log(selection == null);
+    return (
+      <div
+        className="selectionbutton"
+        onClick={() => handleSelection(props.type)}
+      >
+        <img src={props.src} className="difficulty-img" />
+        <button
+          className={`difficulty_button_${props.type}`}
+          disabled={props.disabled}
+          onClick={() => handleSelection(props.type)}
+        >
+          {props.type}
+        </button>
+      </div>
+    );
+  };
+
   let matchingpage = null;
   if (showMatchingPage) {
     matchingpage = (
       <div className="content">
         <div className="selection">
-          <h1>Make your selection</h1>
+          <h2>What difficulty level do you feel like taking today?</h2>
           <div className="selectionbuttons">
-            <button
+            <SelectionButton
               disabled={isHigh}
-              className="selectionbutton"
-              onClick={() => handleSelection("high")}
-            >
-              High
-            </button>
-            <button
+              src={Hard}
+              type="hard"
+            ></SelectionButton>
+            <SelectionButton
               disabled={isMid}
-              className="selectionbutton"
-              onClick={() => handleSelection("med")}
-            >
-              Med
-            </button>
-            <button
+              src={Medium_1}
+              type="medium"
+            ></SelectionButton>
+            <SelectionButton
+              src={Easy_1}
               disabled={isLow}
-              className="selectionbutton"
-              onClick={() => handleSelection("low")}
-            >
-              Low
-            </button>
+              type="easy"
+            ></SelectionButton>
           </div>
         </div>
         <div className="confirmation">
-          <h1>Confirm your selection</h1>
           {!isConfirm && (
             <div className="confirmbuttons">
               <button
                 className="confirmbutton"
                 onClick={() => handleConfirmation()}
+                disabled={selection === null}
               >
-                Confirm
+                {"Start Coding >"}
               </button>
             </div>
           )}
@@ -211,7 +241,22 @@ const MatchingPage = () => {
 
   return isLoggedIn ? (
     <div className="MatchingPage">
-      <Navbar params />
+      <Navbar username={params.username}>
+        <NavItem type="button" content={params.username[0].toUpperCase()}>
+          <Dropdown username={params.username} />
+        </NavItem>
+        <NavItem
+          type="tab"
+          link={`/matching/${params.username}`}
+          content="Home"
+          onClick={() => {
+            navigate("/matching/" + params.username, {
+              state: { cookies: location.state.cookies },
+            });
+          }}
+        ></NavItem>
+      </Navbar>
+      <h1 className="title">Welcome Back! {params.username}</h1>
       {!isConfirm && matchingpage}
       {isConfirm && popup}
       {showMatchFailed && (
@@ -231,7 +276,7 @@ const MatchingPage = () => {
       )}
     </div>
   ) : (
-    <Dialog open={!jwt} onClose={closeDialog}>
+    <Dialog open={!isLoggedIn} onClose={closeDialog}>
       <DialogTitle>Unauthorised</DialogTitle>
       <DialogContent>
         <DialogContentText>

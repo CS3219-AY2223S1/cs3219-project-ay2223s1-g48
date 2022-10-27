@@ -30,10 +30,45 @@ import {
   STATUS_CODE_LOGIN_SUCCESSFUL,
 } from "../constants";
 import { Link } from "react-router-dom";
-import HomePage from "./HomePage";
+
 import { margin } from "@mui/system";
 import styled from "@emotion/styled";
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (props) => props !== "focusColor",
+})((p) => ({
+  // input label when focused
+  "& label.Mui-focused": {
+    color: p.focusColor,
+  },
+  "& .MuiFormLabel-root.Mui-error": {
+    color: "#3514DC",
+  },
 
+  // focused color for input with variant='standard'
+  "& .MuiInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='filled'
+  "& .MuiFilledInput-underline:after": {
+    borderBottomColor: p.focusColor,
+  },
+  // focused color for input with variant='outlined'
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: p.focusColor,
+    },
+    "&.Mui-error fieldset": {
+      borderColor: "#3514DC",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.50)",
+    },
+    "& fieldset": {
+      borderColor: "rgba(250, 106, 60, 0.25)",
+      borderRadius: "12px",
+    },
+  },
+}));
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -100,43 +135,6 @@ const LoginPage = () => {
     navigate("/");
   };
 
-  const StyledTextField = styled(TextField, {
-    shouldForwardProp: (props) => props !== "focusColor",
-  })((p) => ({
-    // input label when focused
-    "& label.Mui-focused": {
-      color: p.focusColor,
-    },
-    "& .MuiFormLabel-root.Mui-error": {
-      color: "#3514DC",
-    },
-
-    // focused color for input with variant='standard'
-    "& .MuiInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='filled'
-    "& .MuiFilledInput-underline:after": {
-      borderBottomColor: p.focusColor,
-    },
-    // focused color for input with variant='outlined'
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: p.focusColor,
-      },
-      "&.Mui-error fieldset": {
-        borderColor: "#3514DC",
-      },
-      "&:hover fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.50)",
-      },
-      "& fieldset": {
-        borderColor: "rgba(250, 106, 60, 0.25)",
-        borderRadius: "12px",
-      },
-    },
-  }));
-
   return (
     <div className="background">
       <img src={Logo} alt="logo" id="logo-login" onClick={backToLandingPage} />
@@ -155,12 +153,11 @@ const LoginPage = () => {
           <FormControl sx={{ width: "80%", margin: "auto", marginTop: "3%" }}>
             <StyledTextField
               focusColor="rgba(250, 106, 60, 0.60)"
-              label="Email"
+              label="Username"
               variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               sx={{ marginBottom: "1rem" }}
-              autoFocus
               error={error && error.username ? true : false}
               helperText={
                 error && error.username ? "Please enter your username" : ""
@@ -182,7 +179,11 @@ const LoginPage = () => {
               }
             />
           </FormControl>
-
+          <h6>
+            <a href="/find_username_or_password">
+              Forgot your password or username?
+            </a>
+          </h6>
           <Box
             display={"flex"}
             flexDirection={"row"}

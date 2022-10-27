@@ -1,19 +1,19 @@
-import UserModel from './user-model.js';
-import 'dotenv/config';
-import bcrypt from 'bcrypt';
+import UserModel from "./user-model.js";
+import "dotenv/config";
+import bcrypt from "bcrypt";
 
 //Set up mongoose connection
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 let mongoDB =
-  process.env.ENV == 'PROD'
+  process.env.ENV == "PROD"
     ? process.env.DB_CLOUD_URI
     : process.env.DB_LOCAL_URI;
 
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 export async function createUser(params) {
   console.log(params);
@@ -21,6 +21,7 @@ export async function createUser(params) {
 }
 
 export async function checkUserName(params) {
+  console.log("checking username: ", params);
   return UserModel.find({ username: params });
 }
 

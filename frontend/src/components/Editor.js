@@ -43,7 +43,7 @@ export default function Editor(props) {
       theme: "3024-day",
     });
 
-    editor.setSize("100%", "70vh");
+    editor.setSize("47vw", "70vh");
 
     const awareness = provider.awareness;
 
