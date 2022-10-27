@@ -5,10 +5,15 @@ import {
   validateUser,
 } from "../model/user-orm.js";
 
+const EMAILREGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 export async function createUser(req, res) {
   try {
     const { username, email, password } = req.body;
-    console.log(username, email, password);
+    // console.log(username, email, password);
+    if (!EMAILREGEX.test(email)) {
+      return res.status(400).json({ message: 'Email is in the wrong format!' });
+    }
     if (username && password && email) {
       const resp = await _createUser(username, email, password);
       console.log(resp);
