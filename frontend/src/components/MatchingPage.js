@@ -255,6 +255,16 @@ const MatchingPage = () => {
             });
           }}
         ></NavItem>
+        <NavItem
+          type="tab"
+          link={`/question/`}
+          content="Manage Questions"
+          onClick={() => {
+            navigate("/question/", {
+              state: { cookies: location.state.cookies },
+            });
+          }}
+        ></NavItem>
       </Navbar>
       <h1 className="title">Welcome Back! {params.username}</h1>
       {!isConfirm && matchingpage}
