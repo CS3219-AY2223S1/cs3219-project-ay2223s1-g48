@@ -50,20 +50,18 @@ io.on("connection", (socket) => {
       .get(`${URL_QNS_SVC}/random/${data.difficulty}`)
       .catch((err) => {
         if (err.response.status === STATUS_CODE_QNS_POSTFAILED) {
-          console.log(err)
           socket.emit("matchSuccess", { matchedRoomId, question: "Error getting question!" });
           socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Error getting question!" });
         } else if (err.response.status === STATUS_CODE_QNS_DBFAILED) {
-          console.log(err)
           socket.emit("matchSuccess", { matchedRoomId, question: "Error occured in questions database" });
           socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Error occured in questions database" });
         } else {
-          console.log(err)
           socket.emit("matchSuccess", { matchedRoomId, question: "Please leave and rematch" });
           socket.to(match.socketID).emit("matchSuccess", { matchedRoomId, question: "Please leave and rematch" });
         }
         return;
       });
+
       if (res && res.status === STATUS_CODE_QNS_SUCCESSFUL) {
         console.log(res);
         socket.emit("matchSuccess", { matchedRoomId, question: res.data.data[0].question });
