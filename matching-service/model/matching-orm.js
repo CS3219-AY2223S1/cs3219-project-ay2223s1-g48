@@ -71,6 +71,22 @@ export async function removeByID(id) {
   }
 }
 
+export async function removeBySocketID(socketID) {
+  const num_removed = await Match.destroy({
+    where: {
+      socketID: socketID,
+    },
+  });
+
+  if (num_removed == 1) {
+    return true;
+  } else if (num_removed == 0) {
+    return false;
+  } else {
+    throw "Database remove error!";
+  }
+}
+
 // relies on timestamp
 export async function popLatest() {
   const match = await Match.findOne({
