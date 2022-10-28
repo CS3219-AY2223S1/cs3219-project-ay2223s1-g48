@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-user-service:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,3 +22,15 @@ jobs:
           heroku_email: "tanyutao913@gmail.com"
           usedocker: true
           appdir: "user-service"
+
+  build-question-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "cs3219-48-question-service" #Must be unique in Heroku
+          heroku_email: "tanyutao913@gmail.com"
+          usedocker: true
+          appdir: "question-service"
