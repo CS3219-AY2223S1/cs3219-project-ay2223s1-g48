@@ -4,24 +4,27 @@ import {
   updateUser,
   checkUserAccount,
   deleteUser,
+  checkEmail,
 } from "./repository.js";
-import UserModel from "./user-model.js";
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 //need to separate orm functions from repository to decouple business logic from persistence
-export async function ormCreateUser(username, password) {
+export async function ormCreateUser(username, email, password) {
   try {
-    const exists = await checkUserName(username);
-    if (!exists) {
+    const userNameExists = await checkUserName(username);
+    const emailExists = await checkEmail(email);
+    // console.log(userNameExists);
+    // console.log(emailExists);
+    if (userNameExists.length == 0 || emailExists.length == 0) {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
       console.log(salt, password);
-      const newUser = await createUser({ username, password });
+      const newUser = await createUser({ username, email, password });
       newUser.save();
       return true;
     } else {
-      const err = new Error("ERROR: UserName already exists");
+      const err = new Error("ERROR: UserName and/or Email already exists");
       console.log(err.message);
       throw err;
     }
@@ -35,7 +38,7 @@ export async function ormPatchUser(username, password, newPassword) {
   try {
     const match = await checkUserAccount(username, password);
     if (match) {
-      const updatedUser = await updateUser(username, password, newPassword);
+      const updatedUser = await updateUser(username, newPassword);
       updatedUser.save();
       return true;
     } else {
@@ -55,7 +58,7 @@ export async function ormDeleteUser(username, password) {
   try {
     const match = await checkUserAccount(username, password);
     if (match) {
-      await deleteUser(username, password);
+      await deleteUser(username);
       return true;
     } else {
       const err = new Error(
@@ -70,10 +73,12 @@ export async function ormDeleteUser(username, password) {
   }
 }
 export async function validateUser(params) {
-  const collection = await UserModel.find({ username: params.username });
+  const collection = await checkUserName(params.username);
+  console.log("validating: ", collection);
   if (collection.length > 1) {
-    //TODO: throw error about duplicate usernames in database
-    return false;
+    const err = new Error("ERROR: Multiple identical username in database");
+    console.log(err.message);
+    throw err;
   }
 
   if (collection.length < 1) {

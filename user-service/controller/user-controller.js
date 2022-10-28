@@ -4,13 +4,18 @@ import {
   ormDeleteUser as _deleteUser,
   validateUser,
 } from "../model/user-orm.js";
-import { checkUserName } from "../model/repository.js";
+
+const EMAILREGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 export async function createUser(req, res) {
   try {
-    const { username, password } = req.body;
-    if (username && password) {
-      const resp = await _createUser(username, password);
+    const { username, email, password } = req.body;
+    // console.log(username, email, password);
+    if (!EMAILREGEX.test(email)) {
+      return res.status(400).json({ message: 'Email is in the wrong format!' });
+    }
+    if (username && password && email) {
+      const resp = await _createUser(username, email, password);
       console.log(resp);
       if (resp.err) {
         return res
@@ -25,7 +30,7 @@ export async function createUser(req, res) {
     } else {
       return res
         .status(400)
-        .json({ message: "Username and/or Password are missing!" });
+        .json({ message: "Username, Email and/or Password are missing!" });
     }
   } catch (err) {
     return res
@@ -36,7 +41,6 @@ export async function createUser(req, res) {
 
 export async function logUserIn(req, res) {
   const { username, password } = req.body;
-
   const token = await validateUser({
     username: username,
     password: password,
@@ -80,8 +84,9 @@ export async function patchUser(req, res) {
 }
 
 export async function deleteUser(req, res) {
+  const { username, password } = req.body;
   try {
-    const { username, password } = req.body;
+    console.log("deleting account: ", username, password);
     if (username && password) {
       const resp = await _deleteUser(username, password);
       console.log(resp);

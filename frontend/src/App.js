@@ -10,6 +10,7 @@ import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import MatchingPage from "./components/MatchingPage";
 import MatchingRoom from "./components/MatchingRoom";
+import FindPage from "./components/FindPage";
 import { Box } from "@mui/material";
 import React, { Component } from "react";
 import QuestionPage from "./components/QuestionPage";
@@ -25,6 +26,7 @@ function App() {
             <Route exact path="/" element={<LandingPage />}></Route>
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/find_username_or_password" element={<FindPage />} />
             <Route path="/home/:username" element={<HomePage />} />
             <Route path="/matchingroom" element={<MatchingRoom />} />
             <Route path="/matching/:username" element={<MatchingPage />} />
