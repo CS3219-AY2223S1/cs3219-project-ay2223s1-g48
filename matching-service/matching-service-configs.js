@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-const URI_QNS_SVC = process.env.URI_QNS_SVC || "http://question-service:8080";
+const URI_QNS_SVC = process.env.URI_QNS_SVC || "https://cs3219-48-question-service.herokuapp.com";
 
 const PREFIX_QNS_SVC = "/api/question";
 

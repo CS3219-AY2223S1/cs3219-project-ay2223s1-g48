@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 
 const httpServer = createServer(app);
-httpServer.listen(8001);
+httpServer.listen(process.env.PORT||8001);
 
 const io = new Server(httpServer, {
   cors: {
