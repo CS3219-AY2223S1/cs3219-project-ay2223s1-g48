@@ -1,55 +1,60 @@
 // YJS with React.JS using y-webrtc
-import React, { useEffect, useRef, useState } from "react";
-import * as Y from "yjs";
-import { WebrtcProvider } from "y-webrtc";
-import { CodemirrorBinding } from "y-codemirror";
-import CodeMirror from "codemirror";
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material-ocean.css";
-import "codemirror/theme/3024-day.css";
-import "codemirror/mode/javascript/javascript";
-import "codemirror/mode/python/python";
-import "codemirror/mode/clike/clike";
-import "codemirror/keymap/sublime";
+import React, { useEffect, useRef, useState } from 'react';
+import * as Y from 'yjs';
+import { WebrtcProvider } from 'y-webrtc';
+import { CodemirrorBinding } from 'y-codemirror';
+import CodeMirror from 'codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material-ocean.css';
+import 'codemirror/theme/3024-day.css';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/python/python';
+import 'codemirror/mode/clike/clike';
+import 'codemirror/keymap/sublime';
 
 const prefix = process.env.PREFIX;
 const pass = process.env.PASS;
 
 export default function Editor(props) {
-  const [EditorRef, setEditorRef] = useState("");
+  const [EditorRef, setEditorRef] = useState('');
 
   const handleLanguageChange = (e) => {
-    EditorRef.setOption("mode", e.target.value);
+    EditorRef.setOption('mode', e.target.value);
   };
 
   useEffect(() => {
     const ydoc = new Y.Doc();
 
-    console.log("room id is " + props.matchedRoomId);
-    console.log("username is " + props.username);
+    console.log('room id is ' + props.matchedRoomId);
+    console.log('username is ' + props.username);
 
     const provider = new WebrtcProvider(prefix + props.matchedRoomId, ydoc, {
       password: pass,
+      signaling: [
+        'wss://signaling.yjs.dev',
+        'wss://y-webrtc-signaling-eu.herokuapp.com',
+        'wss://y-webrtc-signaling-us.herokuapp.com',
+      ],
     });
 
-    const yText = ydoc.getText("codemirror");
+    const yText = ydoc.getText('codemirror');
     const yUndoManager = new Y.UndoManager(yText);
 
-    const editor = CodeMirror(document.getElementById("editor"), {
-      mode: "javascript",
+    const editor = CodeMirror(document.getElementById('editor'), {
+      mode: 'javascript',
       lineNumbers: true,
       // keyMap: "sublime",
       indentWithTabs: true,
-      theme: "3024-day",
+      theme: '3024-day',
     });
 
-    editor.setSize("47vw", "70vh");
+    editor.setSize('47vw', '70vh');
 
     const awareness = provider.awareness;
 
-    awareness.setLocalStateField("user", {
+    awareness.setLocalStateField('user', {
       name: props.username,
-      color: "#ffb61e",
+      color: '#ffb61e',
     });
 
     const binding = new CodemirrorBinding(yText, editor, provider.awareness, {
