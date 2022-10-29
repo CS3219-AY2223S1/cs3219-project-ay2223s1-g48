@@ -1,6 +1,6 @@
 name: CD
 
-on: 
+on:
   push:
     branches:
       - main
@@ -18,10 +18,10 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "cs3219-48-user-service" #Must be unique in Heroku
-          heroku_email: "tanyutao913@gmail.com"
+          heroku_app_name: 'cs3219-48-user-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
           usedocker: true
-          appdir: "user-service"
+          appdir: 'user-service'
 
   build-question-service:
     runs-on: ubuntu-latest
@@ -30,19 +30,31 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "cs3219-48-question-service" #Must be unique in Heroku
-          heroku_email: "tanyutao913@gmail.com"
+          heroku_app_name: 'cs3219-48-question-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
           usedocker: true
-          appdir: "question-service"
+          appdir: 'question-service'
 
   build-matching-service:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-          with:
-            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-            heroku_app_name: "cs3219-48-matching-service" #Must be unique in Heroku
-            heroku_email: "tanyutao913@gmail.com"
-            usedocker: true
-            appdir: "matching-service"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'cs3219-48-matching-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
+          usedocker: true
+          appdir: 'matching-service'
+
+  build-frontend-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY2}}
+          heroku_app_name: 'cs3219-48-peerprep' #Must be unique in Heroku
+          heroku_email: 'e0544315@u.nus.edu'
+          usedocker: true
+          appdir: 'frontend'
