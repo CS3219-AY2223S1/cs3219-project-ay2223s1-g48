@@ -1,15 +1,15 @@
-import express from "express";
-import cors from "cors";
-import { createServer } from "http";
-import { Server } from "socket.io";
-import axios from "axios";
-import { URL_QNS_SVC } from "./matching-service-configs.js";
+import express from 'express';
+import cors from 'cors';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import axios from 'axios';
+import { URL_QNS_SVC } from './matching-service-configs.js';
 import {
   STATUS_CODE_QNS_SUCCESSFUL,
   STATUS_CODE_QNS_DBFAILED,
   STATUS_CODE_QNS_POSTFAILED,
-} from "./matching-service-constants.js";
-import * as matchORM from "./model/matching-orm.js";
+} from './matching-service-constants.js';
+import * as matchORM from './model/matching-orm.js';
 
 var matchedRoomId = 0;
 
@@ -17,29 +17,29 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors()); // config cors so that front-end can use
-app.options("*", cors());
+app.options('*', cors());
 
-app.get("/", (req, res) => {
-  res.send("Hello World from matching-service");
+app.get('/', (req, res) => {
+  res.send('Hello World from matching-service');
 });
 
 const httpServer = createServer(app);
-httpServer.listen(process.env.PORT||8001);
+httpServer.listen(process.env.PORT || 8001);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: 'https://cs3219-48-peerprep.herokuapp.com/',
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("listening on :8001");
-  socket.on("match", async function (data) {
+io.on('connection', (socket) => {
+  console.log('listening on :8001');
+  socket.on('match', async function (data) {
     //guard clause, check all keys present
     if (
-      !(data.hasOwnProperty("username") && data.hasOwnProperty("difficulty"))
+      !(data.hasOwnProperty('username') && data.hasOwnProperty('difficulty'))
     ) {
-      throw "data sent does not have required information!";
+      throw 'data sent does not have required information!';
     }
     const match_exists = await matchORM.checkDifficultyExists(data.difficulty);
     if (match_exists) {
@@ -51,57 +51,57 @@ io.on("connection", (socket) => {
         .catch((err) => {
           if (err.response.status === STATUS_CODE_QNS_POSTFAILED) {
             console.log(err);
-            socket.emit("matchSuccess", {
+            socket.emit('matchSuccess', {
               matchedRoomId,
-              question: "Error getting question!",
+              question: 'Error getting question!',
             });
-            socket.to(match.socketID).emit("matchSuccess", {
+            socket.to(match.socketID).emit('matchSuccess', {
               matchedRoomId,
-              question: "Error getting question!",
+              question: 'Error getting question!',
             });
           } else if (err.response.status === STATUS_CODE_QNS_DBFAILED) {
             console.log(err);
-            socket.emit("matchSuccess", {
+            socket.emit('matchSuccess', {
               matchedRoomId,
-              question: "Error occured in questions database",
+              question: 'Error occured in questions database',
             });
-            socket.to(match.socketID).emit("matchSuccess", {
+            socket.to(match.socketID).emit('matchSuccess', {
               matchedRoomId,
-              question: "Error occured in questions database",
+              question: 'Error occured in questions database',
             });
           } else {
             console.log(err);
-            socket.emit("matchSuccess", {
+            socket.emit('matchSuccess', {
               matchedRoomId,
-              question: "Please leave and rematch",
+              question: 'Please leave and rematch',
             });
-            socket.to(match.socketID).emit("matchSuccess", {
+            socket.to(match.socketID).emit('matchSuccess', {
               matchedRoomId,
-              question: "Please leave and rematch",
+              question: 'Please leave and rematch',
             });
           }
           return;
         });
       if (res && res.status === STATUS_CODE_QNS_SUCCESSFUL) {
         console.log(res);
-        socket.emit("matchSuccess", {
+        socket.emit('matchSuccess', {
           matchedRoomId,
           question: res.data.data[0].question,
         });
-        socket.to(match.socketID).emit("matchSuccess", {
+        socket.to(match.socketID).emit('matchSuccess', {
           matchedRoomId,
           question: res.data.data[0].question,
         });
       }
 
       console.log(
-        "matched " +
+        'matched ' +
           match.username +
-          "at difficulty " +
+          'at difficulty ' +
           match.difficulty +
-          " with " +
+          ' with ' +
           data.username +
-          "at difficulty " +
+          'at difficulty ' +
           data.difficulty
       );
       matchedRoomId++;
@@ -119,8 +119,8 @@ io.on("connection", (socket) => {
         if (curr_match_exists) {
           // exists in database
           await matchORM.removeByID(matchID);
-          socket.emit("matchFail");
-          console.log("match failed for " + data.username);
+          socket.emit('matchFail');
+          console.log('match failed for ' + data.username);
         } else {
           // does not exist in database, match made
           // do nothing
@@ -129,7 +129,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", async (reason) => {
+  socket.on('disconnect', async (reason) => {
     // socket disconnects for any reason, remove from matching waitlist
     await matchORM.removeBySocketID(socket.id);
   });
