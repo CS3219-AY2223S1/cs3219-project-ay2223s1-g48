@@ -28,7 +28,7 @@ httpServer.listen(process.env.PORT || 8001);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://cs3219-48-peerprep.herokuapp.com/',
+    origin: '*',
   },
 });
 
