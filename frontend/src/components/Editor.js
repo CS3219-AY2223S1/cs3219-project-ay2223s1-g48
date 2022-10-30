@@ -4,7 +4,6 @@ import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { CodemirrorBinding } from 'y-codemirror';
 import { WebrtcProvider } from 'y-webrtc';
-import { CodemirrorBinding } from 'y-codemirror';
 import CodeMirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material-ocean.css';
