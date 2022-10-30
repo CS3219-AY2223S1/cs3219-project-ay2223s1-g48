@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
+import { WebsocketProvider } from "y-websocket";
 import { CodemirrorBinding } from "y-codemirror";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
@@ -28,8 +29,18 @@ export default function Editor(props) {
     console.log("room id is " + props.matchedRoomId);
     console.log("username is " + props.username);
 
-    const provider = new WebrtcProvider(prefix + props.matchedRoomId, ydoc, {
-      password: pass,
+    // const provider = new WebrtcProvider(prefix + props.matchedRoomId, ydoc, {
+    //   password: pass,
+    // });
+
+    const provider = new WebsocketProvider(
+      "ws://localhost:1234",
+      prefix + props.matchedRoomId,
+      ydoc
+    );
+
+    provider.on("status", (event) => {
+      console.log(event.status); // logs "connected" or "disconnected"
     });
 
     const yText = ydoc.getText("codemirror");
