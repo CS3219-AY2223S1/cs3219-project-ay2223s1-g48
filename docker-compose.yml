@@ -43,6 +43,14 @@ services:
       - "8081:8081"
     networks:
       - cs3219
+  collab-service:
+    restart: on-failure
+    build: ./collab-service
+    hostname: collab-service
+    ports:
+      - "1234:1234"
+    networks:
+      - cs3219
 
 networks:
     cs3219:
