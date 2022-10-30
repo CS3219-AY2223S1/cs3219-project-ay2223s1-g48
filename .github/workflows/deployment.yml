@@ -59,6 +59,18 @@ jobs:
           usedocker: true
           appdir: 'communication-service'
 
+  build-collab-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY2}}
+          heroku_app_name: 'cs3219-48-collab-service' #Must be unique in Heroku
+          heroku_email: 'e0544315@u.nus.edu'
+          usedocker: true
+          appdir: 'collab-service'
+
   build-frontend-service:
     runs-on: ubuntu-latest
 
