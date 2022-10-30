@@ -38,7 +38,7 @@ export default function Editor(props) {
     //   ],
     // });
     const provider = new WebsocketProvider(
-      'wss://collab-service.herokuapp.com:54451',
+      'wss://collab-service.herokuapp.com',
       prefix + props.matchedRoomId,
       ydoc
     );
