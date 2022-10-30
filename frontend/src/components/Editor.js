@@ -1,6 +1,8 @@
 // YJS with React.JS using y-webrtc
 import React, { useEffect, useRef, useState } from 'react';
 import * as Y from 'yjs';
+import { WebsocketProvider } from 'y-websocket';
+import { CodemirrorBinding } from 'y-codemirror';
 import { WebrtcProvider } from 'y-webrtc';
 import { CodemirrorBinding } from 'y-codemirror';
 import CodeMirror from 'codemirror';
@@ -28,13 +30,22 @@ export default function Editor(props) {
     console.log('room id is ' + props.matchedRoomId);
     console.log('username is ' + props.username);
 
-    const provider = new WebrtcProvider(prefix + props.matchedRoomId, ydoc, {
-      password: pass,
-      signaling: [
-        'wss://signaling.yjs.dev',
-        'wss://y-webrtc-signaling-eu.herokuapp.com',
-        'wss://y-webrtc-signaling-us.herokuapp.com',
-      ],
+    // const provider = new WebrtcProvider(prefix + props.matchedRoomId, ydoc, {
+    //   password: pass,
+    //   signaling: [
+    //     'wss://signaling.yjs.dev',
+    //     'wss://y-webrtc-signaling-eu.herokuapp.com',
+    //     'wss://y-webrtc-signaling-us.herokuapp.com',
+    //   ],
+    // });
+    const provider = new WebsocketProvider(
+      'wss://collab-service.herokuapp.com:54451',
+      prefix + props.matchedRoomId,
+      ydoc
+    );
+
+    provider.on('status', (event) => {
+      console.log(event.status); // logs "connected" or "disconnected"
     });
 
     const yText = ydoc.getText('codemirror');
