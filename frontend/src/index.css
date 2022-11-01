@@ -588,6 +588,18 @@ a .dropdown {
   padding-right: 2px;
   z-index: 3;
 }
+/* question page*/
+.question-page {
+  background-color: #FCF1E6;
+}
+.add-button{
+  width: 4vw;
+  margin-left: 1vw;
+  margin-top: 1vh;
+}
+.add-button:hover {
+  opacity: 0.8;
+}
 /* create new question form */
 .create {
   max-width: 400px;
@@ -627,14 +639,24 @@ a .dropdown {
 /* question previews / list */
 .question-preview {
   padding: 10px 16px;
-  margin: 20px 0;
+  margin: 5vh 1vw;
   border-bottom: 1px solid #fafafa;
+  background-color: whitesmoke;
+  border-radius: 15px;
 }
 .question-preview:hover {
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
 }
 .question-preview h2 {
   font-size: 20px;
-  color: #f1356d;
   margin-bottom: 8px;
+  text-decoration: none;
+}
+#question-cancel-button{
+  margin-left: 20vw;
+  border-radius: 15px;
+  width: 2vw;
+}
+#question-cancel-button:hover{
+  opacity: 0.8;
 }

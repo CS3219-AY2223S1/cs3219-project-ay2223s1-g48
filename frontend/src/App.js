@@ -30,9 +30,9 @@ function App() {
             <Route path="/home/:username" element={<HomePage />} />
             <Route path="/matchingroom" element={<MatchingRoom />} />
             <Route path="/matching/:username" element={<MatchingPage />} />
-            <Route path="/question/" element={<QuestionPage/>}/>
-            <Route path="/question/update/:id" element={<QuestionUpdate/>} />
-            <Route path="/question/create" element={<QuestionCreate/>} />
+            <Route path="/question/:username" element={<QuestionPage />} />
+            <Route path="/question/update/:id" element={<QuestionUpdate />} />
+            <Route path="/question/create" element={<QuestionCreate />} />
           </Routes>
         </Router>
       </Box>

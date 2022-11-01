@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { URL_QUESTION_SVC } from '../configs';
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { URL_QUESTION_SVC } from "../configs";
 
-const QuestionCreate = () => {
-  const [difficulty, setDifficulty] = useState('High');
-  const [questionBody, setQuestionBody] = useState('');
+const QuestionCreate = (props) => {
+  const [difficulty, setDifficulty] = useState("High");
+  const [questionBody, setQuestionBody] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -13,9 +13,10 @@ const QuestionCreate = () => {
     const question = { difficulty: difficulty, question: questionBody };
     await axios.post(URL_QUESTION_SVC, question).then((res) => {
       if (res.status === 201) {
-        alert('contact created!');
+        alert("contact created!");
       }
-      navigate('/question');
+      // navigate(`/question/${props.username}`);
+      window.location.reload(false);
     });
   };
 
