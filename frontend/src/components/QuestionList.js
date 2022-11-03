@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { URL_QUESTION_SVC } from "../configs";
 import QuestionUpdate from "./QuestionUpdate";
 
+import cancelIcon from "../Images/cancel.png";
+
 const QuestionList = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState(null);
@@ -34,7 +36,16 @@ const QuestionList = () => {
     <div className="questionList">
       {questions.map((question) =>
         questionID === question._id ? (
-          <QuestionUpdate id={questionID}></QuestionUpdate>
+          <div>
+            <img
+              src={cancelIcon}
+              id="question-cancel-button"
+              onClick={() => {
+                setquestionID(null);
+              }}
+            />
+            <QuestionUpdate id={questionID}></QuestionUpdate>
+          </div>
         ) : (
           <div
             className="question-preview"

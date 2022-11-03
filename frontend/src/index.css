@@ -660,3 +660,13 @@ a .dropdown {
 #question-cancel-button:hover{
   opacity: 0.8;
 }
+.create button {
+  margin: 2vh;
+  background-color: #F7A76C;
+}
+#delete_question_button {
+  background-color: #FF4A4A;
+}
+#create-question-button {
+  background-color: #54B435;
+}

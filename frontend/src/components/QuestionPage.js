@@ -40,7 +40,7 @@ const QuestionPage = () => {
           link={`/question/`}
           content="Manage Questions"
           onClick={() => {
-            navigate("/question/", {
+            navigate(`/question/${params.username}`, {
               state: { cookies: location.state.cookies },
             });
           }}

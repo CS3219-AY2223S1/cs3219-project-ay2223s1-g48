@@ -39,7 +39,7 @@ const QuestionCreate = (props) => {
           onChange={(e) => setQuestionBody(e.target.value)}
         ></textarea>
 
-        <button>Create Question</button>
+        <button id="create-question-button">Create Question</button>
       </form>
     </div>
   );

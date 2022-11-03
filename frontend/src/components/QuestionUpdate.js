@@ -31,7 +31,8 @@ const QuestionUpdate = (props) => {
     await axios.patch(URL_QUESTION_SVC + "/" + id, question).then((res) => {
       if (res.status === 200) {
         alert("question updated!");
-        navigate("/question");
+        // navigate("/question");
+        window.location.reload();
       } else {
         console.log(res.data.message);
       }
@@ -44,7 +45,8 @@ const QuestionUpdate = (props) => {
       .then((res) => {
         if (res.status === 200) {
           alert("Question deleted!");
-          navigate("/question");
+          // navigate("/question");
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -83,7 +85,9 @@ const QuestionUpdate = (props) => {
 
         <button>Update Question</button>
       </form>
-      <button onClick={() => handleDelete(id)}>delete question</button>
+      <button id="delete_question_button" onClick={() => handleDelete(id)}>
+        delete question
+      </button>
     </div>
   );
 };
