@@ -468,8 +468,6 @@ a .dropdown {
 }
 .services {
   display: flex;
-  max-width: 1400px;
-  max-height: 700px;
   margin: 0 !important;
 }
 .collabservice {

@@ -1,0 +1,92 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+      - 'deployment'
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-user-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'cs3219-48-user-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
+          usedocker: true
+          appdir: 'user-service'
+
+  build-question-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'cs3219-48-question-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
+          usedocker: true
+          appdir: 'question-service'
+
+  build-matching-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: 'cs3219-48-matching-service' #Must be unique in Heroku
+          heroku_email: 'tanyutao913@gmail.com'
+          usedocker: true
+          appdir: 'matching-service'
+
+  build-communication-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY2}}
+          heroku_app_name: 'cs3219-48-communicationservice' #Must be unique in Heroku
+          heroku_email: 'e0544315@u.nus.edu'
+          usedocker: true
+          appdir: 'communication-service'
+
+  build-collab-service:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY2}}
+          heroku_app_name: 'cs3219-48-collab-service' #Must be unique in Heroku
+          heroku_email: 'e0544315@u.nus.edu'
+          usedocker: true
+          appdir: 'collab-service'
+
+  build-frontend-service:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Development Code
+        uses: actions/checkout@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: npm install
+      - run: npm run build --if-present
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY2 }}
+          heroku_app_name: 'cs3219-48-peerprep'
+          heroku_email: 'e0544315@u.nus.edu'
+          appdir: 'frontend'
