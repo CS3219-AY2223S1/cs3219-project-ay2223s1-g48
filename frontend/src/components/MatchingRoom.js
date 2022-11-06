@@ -124,7 +124,7 @@ const MatchingRoom = () => {
           </h1>
           <div className="returnbutton">
             <button className="returnButton" onClick={() => handleReturn()}>
-              Return
+              Leave
             </button>
           </div>
         </div>

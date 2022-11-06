@@ -1,18 +1,19 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { URL_QUESTION_SVC } from '../configs';
+import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { URL_QUESTION_SVC } from "../configs";
 
-const QuestionUpdate = () => {
-  const { id } = useParams();
+const QuestionUpdate = (props) => {
+  // const { id } = useParams();
+  const id = props.id;
   const [question, setQuestion] = useState(null);
-  const [difficulty, setDifficulty] = useState('');
-  const [questionBody, setQuestionBody] = useState('');
+  const [difficulty, setDifficulty] = useState("");
+  const [questionBody, setQuestionBody] = useState("");
   const navigate = useNavigate();
 
   const getQuestions = async (signal) => {
     await axios
-      .get(URL_QUESTION_SVC + '/' + id, signal)
+      .get(URL_QUESTION_SVC + "/" + id, signal)
       .then((res) => {
         const question = res.data.data;
         setQuestion(question);
@@ -27,10 +28,11 @@ const QuestionUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const question = { difficulty: difficulty, question: questionBody };
-    await axios.patch(URL_QUESTION_SVC + '/' + id, question).then((res) => {
+    await axios.patch(URL_QUESTION_SVC + "/" + id, question).then((res) => {
       if (res.status === 200) {
-        alert('question updated!');
-        navigate('/question');
+        alert("question updated!");
+        // navigate("/question");
+        window.location.reload();
       } else {
         console.log(res.data.message);
       }
@@ -39,11 +41,12 @@ const QuestionUpdate = () => {
 
   const handleDelete = async (id) => {
     axios
-      .delete(URL_QUESTION_SVC + '/' + id)
+      .delete(URL_QUESTION_SVC + "/" + id)
       .then((res) => {
         if (res.status === 200) {
-          alert('Question deleted!');
-          navigate('/question');
+          alert("Question deleted!");
+          // navigate("/question");
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -82,7 +85,9 @@ const QuestionUpdate = () => {
 
         <button>Update Question</button>
       </form>
-      <button onClick={() => handleDelete(id)}>delete question</button>
+      <button id="delete_question_button" onClick={() => handleDelete(id)}>
+        delete question
+      </button>
     </div>
   );
 };
