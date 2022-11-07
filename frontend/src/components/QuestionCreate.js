@@ -13,7 +13,7 @@ const QuestionCreate = (props) => {
     const question = { difficulty: difficulty, question: questionBody };
     await axios.post(URL_QUESTION_SVC, question).then((res) => {
       if (res.status === 201) {
-        alert("contact created!");
+        alert("Question created!");
       }
       // navigate(`/question/${props.username}`);
       window.location.reload(false);

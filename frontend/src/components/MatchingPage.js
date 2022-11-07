@@ -1,16 +1,16 @@
-import React from 'react';
-import Easy_1 from '../Images/easy_1.png';
-import Medium_1 from '../Images/medium_1.png';
-import Hard from '../Images/hard_1.png';
+import React from "react";
+import Easy_1 from "../Images/easy_1.png";
+import Medium_1 from "../Images/medium_1.png";
+import Hard from "../Images/hard_1.png";
 
-import Navbar from './Navbar';
-import NavItem from './Navitem';
-import MatchingTimer from './MatchingTimer';
-import Dropdown from './Dropdown';
-import { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
-import MatchingRoom from './MatchingRoom';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import Navbar from "./Navbar";
+import NavItem from "./Navitem";
+import MatchingTimer from "./MatchingTimer";
+import Dropdown from "./Dropdown";
+import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
+import MatchingRoom from "./MatchingRoom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -21,7 +21,7 @@ import {
   DialogTitle,
   TextField,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 
 const MatchingPage = () => {
   // User information
@@ -56,36 +56,36 @@ const MatchingPage = () => {
   useEffect(() => {
     const socket = io(process.env.REACT_APP_MATCHING_URI);
     setSocket(socket);
-    socket.on('connect', () => {
+    socket.on("connect", () => {
       if (!initialRender) {
         setInitialRender(true);
       }
     });
-    socket.on('connect_error', () => {
+    socket.on("connect_error", () => {
       setTimeout(() => socket.connect(), 8001);
     });
-    socket.on('matchSuccess', (elem1) => {
+    socket.on("matchSuccess", (elem1) => {
       // Navigate to Matching Room
-      console.log('Match has succeeded');
+      console.log("Match has succeeded");
       setQuestion(elem1.question);
       setRoomId(elem1.matchedRoomId);
     });
-    socket.on('matchFail', () => {
-      console.log('Match has failed');
+    socket.on("matchFail", () => {
+      console.log("Match has failed");
       // reveal reset and retry buttons
       setShowMatchFailed(true);
     });
     return () => {
-      socket.off('connect');
-      socket.off('connect_error');
-      socket.off('matchSuccess');
-      socket.off('matchFail');
+      socket.off("connect");
+      socket.off("connect_error");
+      socket.off("matchSuccess");
+      socket.off("matchFail");
     };
   }, [setSocket]);
 
   useEffect(() => {
     if (initialRender) {
-      navigate('/matchingroom', {
+      navigate("/matchingroom", {
         state: {
           username: username,
           question: question,
@@ -95,7 +95,7 @@ const MatchingPage = () => {
       });
     } else {
       // do nothing
-      console.log('This is just the initial render!');
+      console.log("This is just the initial render!");
     }
   }, [roomId]);
 
@@ -103,11 +103,11 @@ const MatchingPage = () => {
   const handleSelection = (selected) => {
     console.log(selected);
     setSelection(selected);
-    if (selected === 'hard') {
+    if (selected === "hard") {
       setHigh(true);
       setMid(false);
       setLow(false);
-    } else if (selected === 'medium') {
+    } else if (selected === "medium") {
       setHigh(false);
       setMid(true);
       setLow(false);
@@ -121,15 +121,15 @@ const MatchingPage = () => {
   useEffect(() => {
     if (initialRender) {
       if (isHigh === true) {
-        setSelection('High');
+        setSelection("High");
       } else if (isMid === true) {
-        setSelection('Med');
+        setSelection("Med");
       } else if (isLow === true) {
-        setSelection('Low');
+        setSelection("Low");
       }
       console.log(selection);
     } else {
-      console.log('This is just the initial render!');
+      console.log("This is just the initial render!");
     }
   }, [selection]);
 
@@ -138,7 +138,7 @@ const MatchingPage = () => {
       setConfirmation(true);
       setShowMatchingPage(false);
       setShowPopUp(true);
-      socket.emit('match', { username: username, difficulty: selection });
+      socket.emit("match", { username: username, difficulty: selection });
     } else {
       // You should not have selection == null
     }
@@ -156,7 +156,7 @@ const MatchingPage = () => {
   const handleRepeat = () => {
     setShowMatchFailed(false);
     setShowPopUp(false);
-    socket.emit('match', { username: username, difficulty: selection });
+    socket.emit("match", { username: username, difficulty: selection });
     const refreshTimer = setTimeout(() => {
       setShowPopUp(true);
     }, 1);
@@ -164,7 +164,7 @@ const MatchingPage = () => {
   };
 
   const closeDialog = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   const SelectionButton = (props) => {
@@ -218,7 +218,7 @@ const MatchingPage = () => {
                 onClick={() => handleConfirmation()}
                 disabled={selection === null}
               >
-                {'Start Coding >'}
+                {"Start Coding >"}
               </button>
             </div>
           )}
@@ -250,7 +250,7 @@ const MatchingPage = () => {
           link={`/matching/${params.username}`}
           content="Home"
           onClick={() => {
-            navigate('/matching/' + params.username, {
+            navigate("/matching/" + params.username, {
               state: { cookies: location.state.cookies },
             });
           }}
@@ -260,6 +260,9 @@ const MatchingPage = () => {
           link={`/question/`}
           content="Manage Questions"
           onClick={() => {
+            if (socket) {
+              socket.disconnect();
+            }
             navigate(`/question/${params.username}`, {
               state: { cookies: location.state.cookies },
             });
