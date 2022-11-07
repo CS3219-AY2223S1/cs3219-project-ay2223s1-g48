@@ -13,8 +13,8 @@ import 'codemirror/mode/python/python';
 import 'codemirror/mode/clike/clike';
 import 'codemirror/keymap/sublime';
 
-const prefix = process.env.REACT_APP_PREFIX;
-const pass = process.env.REACT_APP_PASS;
+const prefix = process.env.REACT_APP_PREFIX || '';
+const pass = process.env.REACT_APP_PASS || '';
 
 export default function Editor(props) {
   const [EditorRef, setEditorRef] = useState('');
@@ -38,7 +38,7 @@ export default function Editor(props) {
     //   ],
     // });
     const provider = new WebsocketProvider(
-      'wss://cs3219-48-collab-service.herokuapp.com',
+      'wss://localhost:1234',
       prefix + props.matchedRoomId,
       ydoc
     );

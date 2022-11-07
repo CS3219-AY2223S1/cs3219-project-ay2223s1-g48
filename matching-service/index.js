@@ -26,9 +26,11 @@ app.get('/', (req, res) => {
 const httpServer = createServer(app);
 httpServer.listen(process.env.PORT || 8001);
 
+var allowedDomains = ['https://cs3219-48-peerprep.herokuapp.com','http://localhost:3000'];
+
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://cs3219-48-peerprep.herokuapp.com',
+    origin: allowedDomains,
   },
 });
 
@@ -45,7 +47,8 @@ io.on('connection', (socket) => {
     if (match_exists) {
       // there exists some match in database with same difficulty
       const match = await matchORM.popLatestDifficulty(data.difficulty);
-
+      
+      console.log(data.difficulty);
       const res = await axios
         .get(`${URL_QNS_SVC}/random/${data.difficulty}`)
         .catch((err) => {

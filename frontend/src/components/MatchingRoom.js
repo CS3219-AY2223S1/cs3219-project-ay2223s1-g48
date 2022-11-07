@@ -21,7 +21,7 @@ const MatchingRoom = () => {
   const [socket, setSocket] = useState();
 
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_COMMUNICATION_URI);
+    const socket = io(process.env.REACT_APP_COMMUNICATION_URI || 'http://localhost:8081');
 
     setSocket(socket);
     socket.on('connect', () => {

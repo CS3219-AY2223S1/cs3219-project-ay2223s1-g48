@@ -54,7 +54,7 @@ const MatchingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_MATCHING_URI);
+    const socket = io(process.env.REACT_APP_MATCHING_URI || 'http://localhost:8001');
     setSocket(socket);
     socket.on('connect', () => {
       if (!initialRender) {
@@ -156,6 +156,7 @@ const MatchingPage = () => {
   const handleRepeat = () => {
     setShowMatchFailed(false);
     setShowPopUp(false);
+    console.log(selection);
     socket.emit('match', { username: username, difficulty: selection });
     const refreshTimer = setTimeout(() => {
       setShowPopUp(true);

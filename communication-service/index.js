@@ -16,9 +16,11 @@ app.get('/', (req, res) => {
 const httpServer = createServer(app);
 httpServer.listen(process.env.PORT || 8081);
 
+var allowedDomains = ['https://cs3219-48-peerprep.herokuapp.com','http://localhost:3000'];
+
 const io = new Server(httpServer, {
   cors: {
-    origin: 'https://cs3219-48-peerprep.herokuapp.com',
+    origin: allowedDomains,
   },
 });
 
