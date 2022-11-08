@@ -72,9 +72,9 @@ const QuestionUpdate = (props) => {
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
-          <option value="High">High</option>
-          <option value="Med">Med</option>
-          <option value="Low">Low</option>
+          <option value="High">hard</option>
+          <option value="Med">medium</option>
+          <option value="Low">easy</option>
         </select>
         <label>Question:</label>
         <textarea
