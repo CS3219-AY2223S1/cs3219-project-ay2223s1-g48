@@ -86,7 +86,7 @@ const QuestionUpdate = (props) => {
         <button>Update Question</button>
       </form>
       <button id="delete_question_button" onClick={() => handleDelete(id)}>
-        delete question
+        Delete Question
       </button>
     </div>
   );
