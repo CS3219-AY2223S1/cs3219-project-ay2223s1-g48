@@ -28,9 +28,9 @@ const QuestionCreate = (props) => {
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
-          <option value="High">hard</option>
-          <option value="Med">medium</option>
-          <option value="Low">easy</option>
+          <option value="hard">hard</option>
+          <option value="medium">medium</option>
+          <option value="easy">easy</option>
         </select>
         <label>Question:</label>
         <textarea
