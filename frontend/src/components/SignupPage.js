@@ -85,7 +85,7 @@ function SignupPage() {
           } else {
             setDoesUserExist(true);
             setErrorDialog(
-              "This username already exists. Please login instead"
+              "Username or email already exists. Please login instead"
             );
           }
         } else {
