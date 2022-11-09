@@ -79,8 +79,14 @@ function SignupPage() {
       .post(URL_USER_SVC, { username, email, password })
       .catch((err) => {
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-          setDoesUserExist(true);
-          setErrorDialog("This username already exists. Please login instead");
+          if (err.response.message === "Email is in the wrong format!") {
+            setErrorDialog(err.response.message);
+          } else {
+            setDoesUserExist(true);
+            setErrorDialog(
+              "This username already exists. Please login instead"
+            );
+          }
         } else {
           setErrorDialog("Please try again later");
         }
