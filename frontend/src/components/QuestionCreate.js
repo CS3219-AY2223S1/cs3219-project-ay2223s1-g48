@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { URL_QUESTION_SVC } from "../configs";
 
 const QuestionCreate = (props) => {
-  const [difficulty, setDifficulty] = useState("High");
+  const [difficulty, setDifficulty] = useState("hard");
   const [questionBody, setQuestionBody] = useState("");
   const navigate = useNavigate();
 
