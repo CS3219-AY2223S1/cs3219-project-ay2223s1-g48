@@ -30,7 +30,7 @@ const QuestionUpdate = (props) => {
     const question = { difficulty: difficulty, question: questionBody };
     await axios.patch(URL_QUESTION_SVC + "/" + id, question).then((res) => {
       if (res.status === 200) {
-        alert("question updated!");
+        alert("Question updated!");
         // navigate("/question");
         window.location.reload();
       } else {
@@ -72,9 +72,9 @@ const QuestionUpdate = (props) => {
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
-          <option value="High">High</option>
-          <option value="Med">Med</option>
-          <option value="Low">Low</option>
+          <option value="hard">hard</option>
+          <option value="medium">medium</option>
+          <option value="easy">easy</option>
         </select>
         <label>Question:</label>
         <textarea
@@ -86,7 +86,7 @@ const QuestionUpdate = (props) => {
         <button>Update Question</button>
       </form>
       <button id="delete_question_button" onClick={() => handleDelete(id)}>
-        delete question
+        Delete question
       </button>
     </div>
   );

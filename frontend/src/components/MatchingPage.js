@@ -123,11 +123,11 @@ const MatchingPage = () => {
   useEffect(() => {
     if (initialRender) {
       if (isHigh === true) {
-        setSelection("High");
+        setSelection("hard");
       } else if (isMid === true) {
-        setSelection("Med");
+        setSelection("medium");
       } else if (isLow === true) {
-        setSelection("Low");
+        setSelection("easy");
       }
       console.log(selection);
     } else {

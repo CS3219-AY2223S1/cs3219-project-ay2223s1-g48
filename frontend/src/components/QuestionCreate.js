@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { URL_QUESTION_SVC } from "../configs";
 
 const QuestionCreate = (props) => {
-  const [difficulty, setDifficulty] = useState("High");
+  const [difficulty, setDifficulty] = useState("hard");
   const [questionBody, setQuestionBody] = useState("");
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ const QuestionCreate = (props) => {
     const question = { difficulty: difficulty, question: questionBody };
     await axios.post(URL_QUESTION_SVC, question).then((res) => {
       if (res.status === 201) {
-        alert("contact created!");
+        alert("Question created!");
       }
       // navigate(`/question/${props.username}`);
       window.location.reload(false);
@@ -28,9 +28,9 @@ const QuestionCreate = (props) => {
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         >
-          <option value="High">High</option>
-          <option value="Med">Med</option>
-          <option value="Low">Low</option>
+          <option value="hard">hard</option>
+          <option value="medium">medium</option>
+          <option value="easy">easy</option>
         </select>
         <label>Question:</label>
         <textarea
