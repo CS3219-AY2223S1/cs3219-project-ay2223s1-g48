@@ -81,10 +81,11 @@ function SignupPage() {
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
           if (err.response.data.message === "Email is in the wrong format!") {
             setErrorDialog(err.response.data.message);
+          } else {
+            setDoesUserExist(true);
+            setErrorDialog("Username or Email already exists. Please login instead");
           }
-          setErrorDialog("Username or Email already exists. Please login instead");
         } else {
-          setDoesUserExist(true);
           setErrorDialog("Please try again later");
         }
       });
