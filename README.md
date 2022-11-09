@@ -10,8 +10,9 @@ PeerPrep is a web application that helps students prepare for whiteboard style t
 
 ### Prerequisite
 
-Due to the limitation of heroku free tier, please spin up the respective servers before accessing the frontend deployed app on this link.
-https://cs3219-48-peerprep.herokuapp.com/
+Due to the limitation of heroku free tier, please spin up the respective servers before accessing the app on the following link:
+https://cs3219-48-peerprep.herokuapp.com/ <br/>
+Frontend should show the landing page as per instructions below.
 
 https://cs3219-48-user-service.herokuapp.com/api/user <br/>
 User service should display “Hello World from user-service” if successfully loaded.
@@ -27,6 +28,8 @@ Collab service should display “okay” when successfully loaded.
 
 https://cs3219-48-communicationservice.herokuapp.com/ <br/>
 Communication service should display “Hello World from communication-service” if successfully loaded.
+
+<b>Note: </b> You might need to refresh the page if heroku displays an error the first time.
 
 ### Instructions
 
