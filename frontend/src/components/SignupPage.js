@@ -78,9 +78,10 @@ function SignupPage() {
     const res = await axios
       .post(URL_USER_SVC, { username, email, password })
       .catch((err) => {
+        console.log(err, err.response.data.message);
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-          if (err.response.message === "Email is in the wrong format!") {
-            setErrorDialog(err.response.message);
+          if (err.response.data.message === "Email is in the wrong format!") {
+            setErrorDialog(err.response.data, message);
           } else {
             setDoesUserExist(true);
             setErrorDialog(
