@@ -64,11 +64,7 @@ const QuestionList = () => {
                   : { color: "#FF884B" }
               }
             >
-              {question.difficulty === "hard"
-                ? "hard"
-                : question.difficulty === "easy"
-                ? "easy"
-                : "medium"}
+              {question.difficulty}
             </h2>
             <p>{question.question}</p>
           </div>
