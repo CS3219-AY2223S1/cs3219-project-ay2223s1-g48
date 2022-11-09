@@ -79,7 +79,7 @@ function SignupPage() {
       .post(URL_USER_SVC, { username, email, password })
       .catch((err) => {
         if (err.response.status === STATUS_CODE_BAD_REQUEST) {
-          if (err.response.data.message === "Email is in the wrong format") {
+          if (err.response.data.message === "Email is in the wrong format!") {
             setErrorDialog(err.response.data.message);
           }
           setDoesUserExist(true);
